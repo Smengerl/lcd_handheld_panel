@@ -1,0 +1,82 @@
+substitutions:
+  splash_screen_image_path: 'images/splash_screen.png'
+
+#-------------------------------------------
+# Colors
+#-------------------------------------------
+color:
+  - id: splash_screen_bg_color
+    hex: 03A9F4 # homeassistant blue
+  - id: splash_screen_foreground_color
+    hex: ffffff # 4f6f79 # homeassistant grey
+  - id: splash_screen_spinner_color
+    hex: 03A9F4 # ACE3FB # lighter homeassistant blue
+
+esphome:
+  on_boot:
+    then:
+      - logger.log: "Starting. Show splashsreen"
+#      - light.turn_on:
+#          id: backlight
+#          brightness: 100%
+#          transition_length: 3s
+      - delay: 10s
+      - lvgl.widget.hide: splash_screen
+      - logger.log: "Splashscreen hidden"
+
+
+lvgl:
+  top_layer:
+    widgets:
+##### OVERLAY SCREEN DURING STARTUP/SPLASH SCREEN
+      - obj:  
+          id: splash_screen
+          x: 0
+          y: 0
+          width: 100%
+          height: 100%
+          bg_color: splash_screen_bg_color
+          bg_opa: COVER
+          align: CENTER
+          radius: 0
+          pad_all: 0
+          border_width: 0
+          layout:
+            type: grid
+            grid_columns: [fr(1)]
+            grid_rows: [fr(2), 20px, fr(1)]
+          widgets:
+            - image:
+                grid_cell_row_pos: 0
+                grid_cell_column_pos: 0
+                grid_cell_x_align: CENTER
+                grid_cell_y_align: END
+
+                src: splash_screen_image
+
+            - spinner:
+                grid_cell_row_pos: 2
+                grid_cell_column_pos: 0
+                grid_cell_x_align: CENTER
+                grid_cell_y_align: START
+
+
+                height: 50
+                width: 50
+                spin_time: 1s
+                arc_length: 60deg
+                arc_width: 8
+                arc_color: splash_screen_spinner_color
+                indicator:
+                  arc_color: splash_screen_foreground_color
+                  arc_width: 8
+          on_press:
+            - lvgl.widget.hide: splash_screen
+
+
+image:
+  - file: $splash_screen_image_path
+    id: splash_screen_image
+    type: RGB565
+    transparency: alpha_channel
+#    resize: 150x150

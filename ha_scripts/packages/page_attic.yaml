@@ -1,0 +1,436 @@
+substitutions:
+  page_attic_id: page_attic_id
+  page_attic_friendly_name: "Attic"
+
+lvgl:
+  #  page_wrap: true
+  pages:
+    - id: $page_attic_id
+      x: 0
+      y: 0
+      skip: false
+      layout: # Use list of 4 evenly sized rows with defined spacing from each display border
+        type: grid
+        grid_columns: [10px, fr(1), 10px, fr(1), 10px]
+        grid_rows: [75px, fr(1), 10px]
+        pad_column: 0px
+        pad_row: 0px
+      width: 100%
+      bg_color: bg_color
+      bg_opa: cover
+      #pad_all: 5
+      widgets:
+        - obj: # Container for a horizontal list of buttons for different actions
+            grid_cell_row_pos: 1
+            grid_cell_column_pos: 1
+            grid_cell_y_align: STRETCH
+            grid_cell_x_align: STRETCH
+
+            styles: style_box
+            radius: 5
+            pad_all: 10px
+
+            layout:
+              type: grid
+              grid_columns: [fr(1), 20px, fr(1)]
+              grid_rows: [50px, fr(1), fr(1), fr(1)]
+              pad_column: 10px
+              pad_row: 10px
+            widgets:
+              - label:
+                  grid_cell_row_pos: 0
+                  grid_cell_column_pos: 0
+                  grid_cell_column_span: 3
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  id: label_arbeit_header_text
+                  text_font: $text_font_large
+                  text: Workspace
+                  long_mode: WRAP
+                  height: SIZE_CONTENT
+
+              - button:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 2
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  # checkable: true
+                  id: button_light_arbeit_id
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: TRUE # pass on events to parent
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: $pad_button_icon_text
+                        pad_all: 0px
+                        widgets:
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              text_font: $icon_font
+                              text: $lamp
+                              id: button_light_arbeit_icon_id
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              id: button_light_arbeit_label_id
+                              text: "XXX"
+                  on_click:
+                    then:
+                      - lambda: |-
+                          ESP_LOGI("${TAG}", "button_light_arbeit_id clicked");
+
+              - button:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 2
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  # checkable: true
+                  id: button_attic_ir_heating_id
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: TRUE # pass on events to parent
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: $pad_button_icon_text
+                        pad_all: 0px
+                        widgets:
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              text_font: $icon_font
+                              text: $radiator
+                              id: button_attic_ir_heating_icon_id
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              id: button_attic_ir_heating_label_id
+                              text: "XXX"
+                  on_click:
+                    then:
+                      - lambda: |-
+                          ESP_LOGI("${TAG}", "button_attic_ir_heating_id clicked");
+
+              - bar:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 1
+                  grid_cell_row_span: 3
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+
+                  id: bar_rolleshutter_pos_arbeit_id
+                  height: 30
+                  value: 75
+                  min_value: 0
+                  max_value: 100
+                  #flex_grow: 1 # Fill full space
+
+                  mode: RANGE
+                  radius: 13
+                  border_width: 2
+                  pad_all: 0
+                  bg_color: $bg_color
+                  border_color: $button_bg_unchecked
+
+                  indicator:
+                    radius: 3
+
+              - button:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  id: button_rollershutter_arbeit_open_id
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: TRUE # pass on events to parent
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: $pad_button_icon_text
+                        pad_all: 0px
+                        widgets:
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              text_font: $icon_font
+                              text: $up
+                              id: button_rollershutter_arbeit_open_icon_id
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              id: button_rollershutter_arbeit_open_label_id
+                              text: "Auf"
+                  on_click:
+                    then:
+                      - lambda: |-
+                          ESP_LOGI("${TAG}", "button_rollershutter_arbeit_open_id clicked");
+
+              - button:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  id: button_rollershutter_arbeit_stop_id
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: TRUE # pass on events to parent
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: $pad_button_icon_text
+                        pad_all: 0px
+                        widgets:
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              text_font: $icon_font
+                              text: $stop
+                              id: button_rollershutter_arbeit_stop_icon_id
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              id: button_rollershutter_arbeit_stop_label_id
+                              text: "Stop"
+                  on_click:
+                    then:
+                      - lambda: |-
+                          ESP_LOGI("${TAG}", "button_rollershutter_arbeit_stop_id clicked");
+
+              - button:
+                  grid_cell_row_pos: 3
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  id: button_rollershutter_arbeit_close_id
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: TRUE # pass on events to parent
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: $pad_button_icon_text
+                        pad_all: 0px
+                        widgets:
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              text_font: $icon_font
+                              text: $down
+                              id: button_rollershutter_arbeit_close_icon_id
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              id: button_rollershutter_arbeit_close_label_id
+                              text: "Zu"
+                  on_click:
+                    then:
+                      - lambda: |-
+                          ESP_LOGI("${TAG}", "button_rollershutter_arbeit_close_id clicked");
+
+        - obj: # Container for a horizontal list of buttons for different actions
+            grid_cell_row_pos: 1
+            grid_cell_column_pos: 3
+            grid_cell_y_align: STRETCH
+            grid_cell_x_align: STRETCH
+
+            styles: style_box
+            radius: 5
+            pad_all: 10px
+
+            layout:
+              type: grid
+              grid_columns: [fr(1), 20px, fr(1)]
+              grid_rows: [50px, fr(1), fr(1), fr(1)]
+              pad_column: 10px
+              pad_row: 10px
+            widgets:
+              - label:
+                  grid_cell_row_pos: 0
+                  grid_cell_column_pos: 0
+                  grid_cell_column_span: 3
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  id: label_schlaf_header_text
+                  text_font: $text_font_large
+                  text: Bedroom
+                  long_mode: WRAP
+                  height: SIZE_CONTENT
+
+              - button:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 2
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  # checkable: true
+                  id: button_light_schlaf_id
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: TRUE # pass on events to parent
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: $pad_button_icon_text
+                        pad_all: 0px
+                        widgets:
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              text_font: $icon_font
+                              text: $lamp
+                              id: button_light_schlaf_icon_id
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              id: button_light_schlaf_label_id
+                              text: "XXX"
+                  on_click:
+                    then:
+                      - lambda: |-
+                          ESP_LOGI("${TAG}", "button_light_schlaf_id clicked");
+
+              - bar:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 1
+                  grid_cell_row_span: 3
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+
+                  id: bar_rolleshutter_pos_schlaf_id
+                  height: 30
+                  value: 75
+                  min_value: 0
+                  max_value: 100
+                  #flex_grow: 1 # Fill full space
+
+                  mode: RANGE
+                  radius: 13
+                  border_width: 2
+                  pad_all: 0
+                  bg_color: $bg_color
+                  border_color: $button_bg_unchecked
+
+                  indicator:
+                    radius: 3
+
+              - button:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  id: button_rollershutter_schlaf_open_id
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: TRUE # pass on events to parent
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: $pad_button_icon_text
+                        pad_all: 0px
+                        widgets:
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              text_font: $icon_font
+                              text: $up
+                              id: button_rollershutter_schlaf_open_icon_id
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              id: button_rollershutter_schlaf_open_label_id
+                              text: "Open"
+                  on_click:
+                    then:
+                      - lambda: |-
+                          ESP_LOGI("${TAG}", "button_rollershutter_schlaf_open_id clicked");
+
+              - button:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  id: button_rollershutter_schlaf_stop_id
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: TRUE # pass on events to parent
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: $pad_button_icon_text
+                        pad_all: 0px
+                        widgets:
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              text_font: $icon_font
+                              text: $stop
+                              id: button_rollershutter_schlaf_stop_icon_id
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              id: button_rollershutter_schlaf_stop_label_id
+                              text: "Stop"
+                  on_click:
+                    then:
+                      - lambda: |-
+                          ESP_LOGI("${TAG}", "button_rollershutter_schlaf_stop_id clicked");
+
+              - button:
+                  grid_cell_row_pos: 3
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  id: button_rollershutter_schlaf_close_id
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: TRUE # pass on events to parent
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: $pad_button_icon_text
+                        pad_all: 0px
+                        widgets:
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              text_font: $icon_font
+                              text: $down
+                              id: button_rollershutter_schlaf_close_icon_id
+                          - label:
+                              event_bubble: TRUE # pass on events to parent
+                              id: button_rollershutter_schlaf_close_label_id
+                              text: "Close"
+                  on_click:
+                    then:
+                      - lambda: |-
+                          ESP_LOGI("${TAG}", "button_rollershutter_schlaf_close_id clicked");

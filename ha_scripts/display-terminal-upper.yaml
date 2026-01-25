@@ -1,0 +1,48 @@
+substitutions:
+  name: "display-terminal-upper"
+  friendly_name: "Display_Terminal_Upper"
+  comment: Multi purpose touchscreen display in upper level
+  project_name: display_terminal_upper.esphome
+
+  TAG: "display-terminal-upper.yaml"
+
+  api_key: "Xp9sLw3eVt6yQmZrBn8oKjHdFg5uTnCvYx2aWqMzErU="
+  ota_pw: "f375953f2b3f26e921df4dd1dd5f6cce"
+  fallback_hotspot_ssid: "Display-Terminal-Upper"
+  fallback_hotspot_pw: "jBzacNOvPuzt"
+
+  initial_tab: $page_attic_friendly_name
+
+packages:
+  device_basics: !include display_terminal_packages/device_basics.yaml
+  debug_basics: !include shared_packages/debug_basics.yaml
+  #  deep_sleep:     !include shared_packages/deep_sleep.yaml
+  standard_fonts: !include display_terminal_packages/standard_fonts.yaml
+  #  colors_themes:  !include display_terminal_packages/colors_themes_dark.yaml
+  colors_themes: !include display_terminal_packages/colors_themes_light.yaml
+
+  ### Seiten
+  #  pages_tabs:     !include display_terminal_packages/pages_tabs.yaml
+  #  page_overview:  !include display_terminal_packages/page_overview.yaml
+  page_attic: !include display_terminal_packages/page_attic.yaml
+  #  page_evcc:      !include display_terminal_packages/page_evcc.yaml
+  #  page_vehicle:   !include display_terminal_packages/page_vehicle.yaml
+  #  page_wlan:      !include display_terminal_packages/page_wlan.yaml
+
+  ### Reihenfolge wichtig. Jedes Package wird unterhalb der anderen gemergt und liegt somit weiter "oben" in der Zeichenreihenfolge
+  statusbar: !include display_terminal_packages/statusbar.yaml
+  offline_screen: !include display_terminal_packages/offline_screen.yaml
+  splash_screen: !include display_terminal_packages/splash_screen.yaml
+  screen_dimming: !include display_terminal_packages/screen_dimming.yaml
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+  comment: ${comment}
+  min_version: 2024.7.0
+  project:
+    name: ${project_name}
+    version: "1.0"
+  platformio_options:
+    board_build.flash_mode: dio
+  compile_process_limit: 1

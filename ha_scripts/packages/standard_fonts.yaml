@@ -1,0 +1,322 @@
+substitutions:
+
+  ### Fonts to use
+  icon_font: icon_font
+  text_font: text_font
+  weather_font: weather_font
+  text_font_large: text_font_large
+
+  # ICONS #############################################################
+
+  ### General icons
+  info:                     "\U000F0A04" # mdi:message-alert-outline
+  warning:                  "\U000F002A" # mdi:alert-outline
+  error:                    "\U000F0026" # mdi:alert
+
+  down:                     "\U000F0045" # mdi:arrow-down
+  up:                       "\U000F005D" # mdi:arrow-up
+  left:                     "\U000F004D" # mdi:arrow-left
+  right:                    "\U000F0054" # mdi:arrow-right
+
+  stop:                     "\U000F0667" # mdi:stop-circle-outline
+
+
+  ### Battery states
+  battery_outline:          "\U000F008E" # mdi:battery-outline (empty)
+  battery_low:              "\U000F12A1" # mdi:battery-low
+  battery_medium:           "\U000F12A2" # mdi:battery-medium
+  battery_high:             "\U000F12A3" # mdi:battery-high
+  battery:                  "\U000F0079" # mdi:battery (Fully charged, non charging)
+  battery_charging_outline: "\U000F089F" # mdi:battery-charging-outline (empty but charging)
+  battery_charging_low:     "\U000F12A4" # mdi:battery-charging-low
+  battery_charging_medium:  "\U000F12A5" # mdi:battery-charging-medium
+  battery_charging_high:    "\U000F12A6" # mdi:battery-charging-high
+
+  energy:                   "\U000F140B" # mdi:lightning-bolt
+  pause:                    "\U000F03E4" # mdi:pause
+  disconnected:             "\U000F1616" # mdi:connection
+  co2:                      "\U000F07E4" # mdi:molecule-co2
+  sigma:                    "\U000F04A0" # mdi:sigma 
+  
+  line_unchecked:           "\U000F0BD2" # mdi:timeline-outline
+  line_checked:             "\U000F1532" # mdi:timeline-check
+
+
+  ### Page overview
+  lamp:                     "\U000F06B5" # mdi-lamp
+  garage_open:              "\U000F12D4" # mdi:garage-open-variant
+  garage_closed:            "\U000F12D3" # mdi:garage-variant
+  door_open:                "\U000F081C" # mdi:door-open
+  radiator:                 "\U000F0438" # mdi:radiator
+  robot_vacuum:             "\U000F0908" # mdi:robot-vacuum-variant 
+  outdoor_lamp:             "\U000F1054" # mdi:outdoor-lamp
+  string_lights:            "\U000F12BA" # mdi-string-lights
+  pollen:                   "\U000F1886" # mdi:flower-pollen-outline
+  solar_power:              "\U000F0A72" # mdi:solar-power
+
+
+
+  ### Temperature trend icon
+  temp_trend_down:          "\U000F0533" # mdi:trending-down
+  temp_trend_up:            "\U000F0535" # mdi:trending-up
+  temp_trend_neutral:       "\U000F0534" # mdi:trending-neutral
+
+
+
+  ### weather icon
+  cloudy:                   "\U000F0590" # mdi:weather-cloudy
+  cloudyalert:              "\U000F0F2F" # mdi:weather-cloudy-alert
+  cloudyarrowright:         "\U000F0E6E" # mdi:weather-cloudy-arrow-right
+  fog:                      "\U000F0591" # mdi:weather-fog
+  hail:                     "\U000F0592" # mdi:weather-hail
+  hazy:                     "\U000F0F30" # mdi:weather-hazy
+  hurricane:                "\U000F0898" # mdi:weather-hurricane
+  lightning:                "\U000F0593" # mdi:weather-lightning
+  lightningrainy:           "\U000F067E" # mdi:weather-lightning-rainy
+  night:                    "\U000F0594" # mdi:weather-night
+  nightpartlycloudy:        "\U000F0F31" # mdi:weather-night-partly-cloudy
+  partlycloudy:             "\U000F0595" # mdi:weather-partly-cloudy
+  partlylightning:          "\U000F0F32" # mdi:weather-partly-lightning
+  partlyrainy:              "\U000F0F33" # mdi:weather-partly-rainy
+  partlysnowy:              "\U000F0F34" # mdi:weather-partly-snowy
+  partlysnowyrainy:         "\U000F0F35" # mdi:weather-partly-snowy-rainy
+  pouring:                  "\U000F0596" # mdi:weather-pouring
+  rainy:                    "\U000F0597" # mdi:weather-rainy
+  snowy:                    "\U000F0598" # mdi:weather-snowy
+  snowyheavy:               "\U000F0F36" # mdi:weather-snowy-heavy
+  snowyrainy:               "\U000F067F" # mdi:weather-snowy-rainy
+  sunny:                    "\U000F0599" # mdi:weather-sunny
+  sunnyalert:               "\U000F0F37" # mdi:weather-sunny-alert
+  sunnyoff:                 "\U000F14E4" # mdi:weather-sunny-off
+  sunset:                   "\U000F059A" # mdi:weather-sunset
+  sunsetdown:               "\U000F059B" # mdi:weather-sunset-down
+  sunsetup:                 "\U000F059C" # mdi:weather-sunset-up
+  tornado:                  "\U000F0F38" # mdi:weather-tornado
+  windy:                    "\U000F059D" # mdi:weather-windy
+  windyvariant:             "\U000F059E" # mdi:weather-windy-variant
+
+ 
+  ### EVCC
+  transmission_tower:        "\U000F0D3E" # mdi:transmission-tower
+  power_on:                  "\U000F0901" # mdi:power-cycle
+  power_off:                 "\U000F0902" # mdi:power-off
+  solar_power_variant:       "\U000F1A74" # mdi:solar-power-variant-outline
+  home_lightning_bold:       "\U000F1904" # mdi:home-lightning-bolt-outline
+
+  water:                     "\U000F058C" # mdi:water
+  fire:                      "\U000F0238" # mdi:fire
+
+  home:                      "\U000F02DC" # mdi:home
+  road:                      "\U000F0462" # mdi:road-variant
+
+  ### Alarm icons
+#  car_electric:             "\U000F0B6C" # mdi:car-electric (Charging)
+
+  ### general vehicle status
+  car:                      "\U000F010B" # mdi:car 
+#  connected_car:            "\U000F010D" # mdi:car-connected 
+#  offline:                  "\U000F0164" # mdi:cloud-off-outline 
+
+  charging_cable_connected: "\U000F151E" # mdi:ev-plug-type2
+
+  locked:                   "\U000F0341" # mdi:lock-outline
+  unlocked:                 "\U000F0FC7" # mdi:lock-open-variant-outline
+
+
+
+  wlan:                     "\U000F0003" # mdi:access-point
+
+  attic:                    "\U000F112B" # mdi:home-roof
+
+
+
+#-------------------------------------------
+# Fonts
+#-------------------------------------------
+font:
+  - file: "gfonts://Roboto"
+    id: $text_font
+    size: 20
+    bpp: 4
+    glyphs:
+      ['&', '@', '!', ',', '.', '?', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z', 'Ä', 'ä', 'Ö', 'ö', 'Ü', 'ü', 'ß', '/', '€', '|']    
+
+    extras:
+      # http://materialdesignicons.com/cdn/7.4.47/
+      - file: 'https://github.com/Templarian/MaterialDesign-Webfont/raw/v7.4.47/fonts/materialdesignicons-webfont.ttf'
+        glyphs: [
+          $locked,
+          $unlocked,
+          $car,
+          $disconnected,
+          $pause,
+          $energy,
+          
+          $charging_cable_connected,
+
+          $transmission_tower,
+          $solar_power_variant,
+
+          $co2,
+          $sigma,
+          
+          $line_checked,
+          $line_unchecked,
+
+          $up,
+          $down,
+          $right,
+          $left,
+          $home_lightning_bold,
+
+
+          $battery_outline,
+          $battery_low,
+          $battery_medium,
+          $battery_high,
+          $battery,
+
+          $battery_charging_outline,
+          $battery_charging_low,
+          $battery_charging_medium,
+          $battery_charging_high,
+          
+
+          $solar_power,
+          $robot_vacuum,
+          $info,
+          $warning,
+          $error,
+          $garage_open,
+          $door_open,
+          $pollen,
+          $temp_trend_down,
+          $temp_trend_up,
+          $temp_trend_neutral,
+
+          $wlan,
+          $attic,
+        ]
+
+
+  - file: "gfonts://Roboto"
+    id: $text_font_large
+    size: 32
+    bpp: 4
+    glyphs:
+      ['&', '@', '!', ',', '.', '?', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z', 'Ä', 'ä', 'Ö', 'ö', 'Ü', 'ü', 'ß', '/', '€', '|']    
+
+    extras:
+      # http://materialdesignicons.com/cdn/7.4.47/
+      - file: 'https://github.com/Templarian/MaterialDesign-Webfont/raw/v7.4.47/fonts/materialdesignicons-webfont.ttf'
+        glyphs: [
+          $locked,
+          $unlocked,
+          $road,
+          $disconnected,
+          $pause,
+          $energy,
+
+        ]
+
+ 
+  # http://materialdesignicons.com/cdn/7.4.47/
+  - file: 'https://github.com/Templarian/MaterialDesign-Webfont/raw/v7.4.47/fonts/materialdesignicons-webfont.ttf'
+    id: $weather_font
+    size: 60
+    bpp: 4
+    glyphs: [
+      $warning,
+      
+      $cloudy,
+      $cloudyalert,
+      $cloudyarrowright,
+      $fog,
+      $hail,
+      $hazy,
+      $hurricane,
+      $lightning,
+      $lightningrainy,
+      $night,
+      $nightpartlycloudy,
+      $partlycloudy,
+      $partlylightning,
+      $partlyrainy,
+      $partlysnowy,
+      $partlysnowyrainy,
+      $pouring,
+      $rainy,
+      $snowy,
+      $snowyheavy,
+      $snowyrainy,
+      $sunny,
+      $sunnyalert,
+      $sunnyoff,
+      $sunset,
+      $sunsetdown,
+      $sunsetup,
+      $tornado,
+      $windy,
+      $windyvariant,
+    ]
+
+  # http://materialdesignicons.com/cdn/7.4.47/
+  - file: 'https://github.com/Templarian/MaterialDesign-Webfont/raw/v7.4.47/fonts/materialdesignicons-webfont.ttf'
+    id: $icon_font
+    size: 45
+    bpp: 4
+    glyphs: [
+      ### Icons für Buttons in EVCC
+      $power_on,
+      $power_off,
+
+      # $charging_cable_connected,
+      $locked,
+      $unlocked,
+
+      ### Icons für Power Flow Diagram
+      $home_lightning_bold,
+      $solar_power_variant,
+      $transmission_tower,
+      $water,
+      $fire,
+
+      ### Icons für Buttons in Übersichtsseite
+      $lamp,
+      $string_lights,
+      $garage_open,
+      $garage_closed,
+      $radiator,
+      $robot_vacuum,
+      $outdoor_lamp,
+
+      $info,
+      $warning,
+      $error,
+
+      ### Mehrfach verwendete Icons
+      $battery_outline,
+      $battery_low,
+      $battery_medium,
+      $battery_high,
+      $battery,
+      $battery_charging_outline,
+      $battery_charging_low,
+      $battery_charging_medium,
+      $battery_charging_high,
+
+      $up,
+      $down,
+      $stop,
+    ]       
+   

@@ -1,0 +1,167 @@
+substitutions:
+  ### fonts
+  label_color: label_color
+
+  button_bg_checked: button_bg_checked
+  button_texticon_checked: button_texticon_checked
+
+  button_bg_unchecked: button_bg_unchecked
+  button_texticon_unchecked: button_texticon_unchecked
+
+  button_bg_disabled: button_bg_disabled
+  button_texticon_disabled: button_texticon_disabled
+
+  bg_color: bg_color
+  glow_color: glow_color
+
+  engineering_outline_width: "0"
+  engineering_outline_color: "0xFFC0CB"
+
+  pad_button_icon_text: "0"
+
+#-------------------------------------------
+# Colors
+#-------------------------------------------
+color:
+  - id: $label_color
+    hex: 222222 # light gray
+
+    # Button Enabled + Checked
+  - id: $button_bg_checked
+    hex: 81bae9 # light blue
+  - id: $button_texticon_checked
+    hex: 222222 # very light gray
+
+    # Button Enabled but unchecked
+  - id: $button_bg_unchecked
+    hex: 3498DB # medium blue
+  - id: $button_texticon_unchecked
+    hex: AED6F1 # light blue
+
+    # Button disabled
+  - id: $button_bg_disabled
+    hex: 313131 # medium gray
+  - id: $button_texticon_disabled
+    hex: B6B6B6 # light gray
+
+  - id: $glow_color
+    hex: a5a5a5
+
+  - id: $bg_color
+    red: 100%
+    green: 100%
+    blue: 100%
+  #- id: line_color
+  #   hex: 0000FF # red
+  #- id: text_color
+  #  hex: 333333 # gray
+
+lvgl:
+  default_font: $text_font
+  theme:
+    obj: # Default theming for all widget unless further specified
+      outline_width: $engineering_outline_width
+      outline_color: $engineering_outline_color
+      radius: 0
+      pad_all: 0
+      bg_opa: TRANSP
+      scroll_on_focus: false
+      scrollable: false
+      scrollbar_mode: "OFF"
+      border_width: 0
+      checked:
+        bg_color: $button_bg_checked
+        text_color: $button_texticon_checked
+
+    button:
+      outline_width: $engineering_outline_width
+      outline_color: $engineering_outline_color
+      text_font: $text_font
+      scroll_on_focus: true
+      radius: 25
+      pad_left: 10px
+      pad_top: 10px
+      pad_bottom: 10px
+      pad_right: 10px
+      shadow_width: 0
+      bg_opa: COVER
+      bg_color: $button_bg_unchecked
+      text_color: $button_texticon_unchecked
+      checked:
+        bg_color: $button_bg_checked
+        text_color: $button_texticon_checked
+      disabled:
+        bg_color: $button_bg_disabled
+        text_color: $button_texticon_disabled
+
+    label:
+      outline_width: $engineering_outline_width
+      outline_color: $engineering_outline_color
+      text_font: $text_font
+      text_color: $label_color
+      text_align: LEFT
+      #      text_opa: TRANSP
+      bg_opa: TRANSP
+
+    image:
+      bg_opa: TRANSP
+
+    line:
+      bg_opa: TRANSP
+      checked:
+        bg_color: $button_bg_checked
+        text_color: $button_texticon_checked
+
+    #    arc:
+    #      bg_opa: TRANSP
+    #      outline_width: $engineering_outline_width
+    #      outline_color: $engineering_outline_color
+
+    bar:
+      outline_width: $engineering_outline_width
+      outline_color: $engineering_outline_color
+
+      bg_opa: COVER
+      bg_color: $button_texticon_disabled
+      indicator:
+        bg_color: $button_bg_unchecked
+      border_width: 0
+
+  style_definitions:
+    - id: style_tabs
+      radius: 0
+      pad_all: 5px
+      width: SIZE_CONTENT
+      height: SIZE_CONTENT
+      bg_color: $button_bg_unchecked
+      text_color: $button_texticon_unchecked
+      bg_opa: COVER
+
+    - id: style_statusbar
+      bg_color: $bg_color
+      bg_opa: COVER
+      border_opa: COVER
+      border_color: $label_color
+      border_side: BOTTOM
+      border_width: 1
+      radius: 0
+      scrollbar_mode: "OFF"
+      pad_right: 10px
+      pad_left: 10px
+      pad_bottom: 0px
+      pad_top: 0px
+      width: 100%
+
+    - id: style_box
+      border_width: 1
+      border_color: $button_texticon_disabled
+      border_side:
+        - TOP
+        - BOTTOM
+        - LEFT
+        - RIGHT
+      bg_color: $bg_color
+      bg_opa: COVER
+      shadow_width: 55
+      shadow_color: $glow_color
+      scrollbar_mode: "OFF"

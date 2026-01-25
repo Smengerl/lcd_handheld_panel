@@ -1,0 +1,65 @@
+substitutions:
+  offline_image_path: 'images/offline.png' 
+
+#-------------------------------------------
+# Colors
+#-------------------------------------------
+color:
+  - id: offline_screen_bg_color
+    red: 0
+    green: 0
+    blue: 0
+
+lvgl:
+  top_layer:
+    widgets:
+##### OVERLAY SCREEN IN CASE TERMINAL IS OFFLINE (DISCONNECTED FROM HA)
+      - obj:
+          id: offline_screen
+          x: 0
+          y: 0
+          width: 100%
+          height: 100%
+          bg_color: offline_screen_bg_color
+          bg_opa: COVER
+          radius: 0
+          pad_all: 0
+          border_width: 0
+          layout:
+            type: grid
+            grid_columns: [fr(1)]
+            grid_rows: [fr(1)]
+          widgets:
+          - image:
+              grid_cell_row_pos: 0
+              grid_cell_column_pos: 0
+              grid_cell_x_align: CENTER
+              grid_cell_y_align: CENTER
+              src: offline_image
+#              y: -100
+
+
+api:
+  on_client_connected:
+    - if:
+        condition:
+          lambda: 'return (0 == client_info.find("Home Assistant "));'
+        then:
+          - logger.log: "HA connected"
+          - lvgl.widget.hide: offline_screen
+
+  on_client_disconnected:
+    - if:
+        condition:
+          lambda: 'return (0 == client_info.find("Home Assistant "));'
+        then:
+          - logger.log: "HA disconnected"
+          - lvgl.widget.show: offline_screen
+
+   
+image:
+  - file: $offline_image_path
+    id: offline_image
+    type: RGB565
+    transparency: alpha_channel
+#    resize: 150x150

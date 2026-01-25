@@ -1,0 +1,122 @@
+substitutions:
+  label_time_id: time_id
+  label_date_id: date_id
+  label_temp_id: temp_id
+
+script:
+  - id: time_update
+    then:
+      - lambda: |-
+          const static char* STRING_DAY_0 = "Sun.";
+          const static char* STRING_DAY_1 = "Mon.";
+          const static char* STRING_DAY_2 = "Tue.";
+          const static char* STRING_DAY_3 = "Wed.";
+          const static char* STRING_DAY_4 = "Thu.";
+          const static char* STRING_DAY_5 = "Fri.";
+          const static char* STRING_DAY_6 = "Sat.";
+          const static char* DAY_OF_THE_WEEK[] = {
+            STRING_DAY_0,
+            STRING_DAY_1,
+            STRING_DAY_2,
+            STRING_DAY_3,
+            STRING_DAY_4,
+            STRING_DAY_5,
+            STRING_DAY_6
+          };
+
+                    
+          const static char* STRING_MONTHS_00 = "January";
+          const static char* STRING_MONTHS_01 = "February";
+          const static char* STRING_MONTHS_02 = "March";
+          const static char* STRING_MONTHS_03 = "April";
+          const static char* STRING_MONTHS_04 = "May";
+          const static char* STRING_MONTHS_05 = "June";
+          const static char* STRING_MONTHS_06 = "July";
+          const static char* STRING_MONTHS_07 = "August";
+          const static char* STRING_MONTHS_08 = "September";
+          const static char* STRING_MONTHS_09 = "October";
+          const static char* STRING_MONTHS_10 = "November";
+          const static char* STRING_MONTHS_11 = "December";
+
+          const static char* MONTHS_OF_THE_YEAR[] = {
+            STRING_MONTHS_00,
+            STRING_MONTHS_01,
+            STRING_MONTHS_02,
+            STRING_MONTHS_03,
+            STRING_MONTHS_04,
+            STRING_MONTHS_05,
+            STRING_MONTHS_06,
+            STRING_MONTHS_07,
+            STRING_MONTHS_08,
+            STRING_MONTHS_09,
+            STRING_MONTHS_10,
+            STRING_MONTHS_11
+          };
+
+          ESP_LOGD("${TAG}", "Update time, %i=%s, %i. %i=%s",
+            id(clock_timer).now().day_of_week - 1,
+            DAY_OF_THE_WEEK[id(clock_timer).now().day_of_week - 1],
+            id(clock_timer).now().day_of_month, 
+            id(clock_timer).now().month - 1,
+            MONTHS_OF_THE_YEAR[id(clock_timer).now().month - 1]);
+            
+          lv_label_set_text_fmt($label_date_id, "%s, %i. %s", 
+            DAY_OF_THE_WEEK[id(clock_timer).now().day_of_week - 1],
+            id(clock_timer).now().day_of_month, 
+            MONTHS_OF_THE_YEAR[id(clock_timer).now().month - 1]);
+          lv_label_set_text_fmt($label_time_id, "%02i:%02i", id(clock_timer).now().hour, id(clock_timer).now().minute);
+
+interval:
+  - interval: 60s
+    then:
+      - script.execute: time_update
+
+##-------------------------------------------
+# LVGL Buttons
+##-------------------------------------------
+lvgl:
+  top_layer:
+    widgets:
+      - obj:
+          id: status_bar
+
+          styles: style_statusbar
+          border_width: 0 # Disable lower border
+          x: 0
+          y: 0
+          #          width: 100%
+          height: 30px
+
+          layout:
+            type: grid
+            grid_columns: [fr(1), fr(1), fr(1)]
+            grid_rows: [fr(1)]
+            pad_column: 0px
+            pad_row: 0px
+          widgets:
+            - label:
+                grid_cell_row_pos: 0
+                grid_cell_column_pos: 0
+                grid_cell_x_align: STRETCH
+                grid_cell_y_align: START
+                text: "TEMP"
+                id: $label_temp_id
+                text_align: left
+
+            - label:
+                grid_cell_row_pos: 0
+                grid_cell_column_pos: 1
+                grid_cell_x_align: STRETCH
+                grid_cell_y_align: START
+                text: "TIME"
+                id: $label_time_id
+                text_align: center
+
+            - label:
+                grid_cell_row_pos: 0
+                grid_cell_column_pos: 2
+                grid_cell_x_align: STRETCH
+                grid_cell_y_align: START
+                text: "DATE"
+                id: $label_date_id
+                text_align: right

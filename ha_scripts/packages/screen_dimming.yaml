@@ -1,0 +1,36 @@
+esphome:
+  on_boot:
+    then:
+      - light.turn_on:
+          id: backlight
+          brightness: 100%
+          transition_length: 2s
+
+
+
+touchscreen:
+  on_touch:
+    - light.turn_on: backlight
+    - if:
+        condition: lvgl.is_paused
+        then:
+          - lvgl.resume:
+          - lvgl.widget.redraw:
+
+
+
+lvgl:
+
+  on_idle:
+    - timeout: 10s
+      then: # dim display after 10s of idle
+        - logger.log: Dim display after 10s
+        - light.turn_off:
+            id: backlight
+            transition_length: 4s
+
+    - timeout: 14s #!lambda return $display_dim_timeout+$display_dim_down;
+      then: # Activate snow and disable LVGL after display is dimmed 
+        - logger.log: LVGL pause + snow after light was dimmed
+        - lvgl.pause:
+            show_snow: true
