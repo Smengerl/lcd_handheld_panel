@@ -14,7 +14,7 @@ A mobile control panel with LCD touchscreen for smart home operation. Convenient
 | --------- | --------- |
 | <img src="./print/example_1.jpg" width="300" > | <img src="./print/example_2.jpg" width="300" > |
 
-## 3D-Printed Parts (Selected)
+## 3D-Printed Parts
 
 See the `print/stl/` and `print/png/` folders for all printable parts and preview images.
 
@@ -62,11 +62,9 @@ This example integrates the display with Home Assistant using ESPHome.
 
 1. Register the ESP32 with ESPHome (e.g., via ESPHome Web).
 2. Rename the device to matrix-display (so that `display-terminal-upper.yaml` is the .yaml of your ESP home configuration for the device)
-3. Copy the contents of [./ha_scripts](././ha_scripts) to the folder `[homeassistant]/config/esphome`, replacing `display-terminal-upper.yaml`
-4. Download the desired fonts and place them in the fonts subfolder. Fonts can be found at [1001fonts.com](https://www.1001fonts.com/pixel-fonts.html). Due to unclear licenses, I'm not sharing them here but you should not have any issue finding them by the name in the code on that page. If you want other fonts, you should have no issues adapting the code as all is in fonts.yaml and font_helper.h.
-5. Customize `fonts.yaml` if needed, e.g. if you want to use further material-design icons than the one I had added as an example 
-6. Open `display-terminal-upper.yaml` in ESPHome and upload the configuration to the device.
-7. Once installed, the device will appear in Home Assistant. Set up the device giving it a name (in the following I assume you called it again matrix_display) and you are ready to go. 
+3. Copy the contents of [./ha_scripts](././ha_scripts) to the folder `[homeassistant]/config/esphome`, replacing `display-terminal-upper.yaml` 
+4. Open `display-terminal-upper.yaml` in ESPHome and upload the configuration to the device.
+5. Once installed, the device will appear in Home Assistant. Set up the device giving it a name and you are ready to go. 
 
 
 #### Usage
