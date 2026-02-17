@@ -2,7 +2,7 @@
 # Wireless Smart Home Control Panel
 
 [![3D Printing](https://img.shields.io/badge/3D_printing-STL-green)](#)
-[![License](https://img.shields.io/badge/license-Beerware-green)](#)
+[![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue)](http://creativecommons.org/licenses/by-sa/4.0/)
 
 A mobile control panel with LCD touchscreen for smart home operation. Conveniently wireless rechargeable via Qi and magnetically centered with Magsafe. Can be used, for example, with Home Assistant via ESPHome.
 
@@ -80,7 +80,7 @@ All .stl, .png, and assembly pictures are automatically exported via my Fusion a
 
 ## License
 
-This project is licensed under the Beerware License — see `LICENSE.txt` for details.
+This project is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0) — see `LICENSE.txt` for details or visit http://creativecommons.org/licenses/by-sa/4.0/
 
 ## Authors
 
