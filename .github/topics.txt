@@ -1,0 +1,7 @@
+3d-printing
+esp-32
+esphome
+magsafe
+maker
+smarthome
+wireless-charging
