@@ -6,6 +6,16 @@
 
 A mobile control panel with LCD touchscreen for smart home operation. Conveniently wireless rechargeable via Qi and magnetically centered with Magsafe. Can be used, for example, with Home Assistant via ESPHome.
 
+## Table of Contents
+- [Overview](#overview)
+- [3D-Printed Parts](#3d-printed-parts)
+- [Standard Hardware](#standard-hardware)
+- [Assembly](#assembly)
+- [Usage](#usage)
+- [Development](#development)
+- [License](#license)
+- [Authors](#authors)
+
 ## Overview
 
 ![Assembly overview](./print/zsb/full.png)
