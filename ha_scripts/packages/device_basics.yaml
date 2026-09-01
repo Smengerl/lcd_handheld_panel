@@ -89,12 +89,9 @@ output:
 # (definiert die vom ESP in HA zu exponierenden Aktoren)
 #-------------------------------------------
 light:
-  ## Expose display backlight
-  - platform: monochromatic
-    output: GPIO38
-    name: Backlight
-    id: backlight
-    restore_mode: ALWAYS_ON
+  # NOTE: the display backlight (id: backlight) is defined in screen_dimming.yaml,
+  # which owns brightness/dimming. It is internal (not exposed to HA) so HA can't
+  # fight the dimming automation.
 
   ## Expose internal relay as light
   - platform: binary

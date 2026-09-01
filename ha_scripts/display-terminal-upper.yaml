@@ -14,26 +14,26 @@ substitutions:
   initial_tab: $page_attic_friendly_name
 
 packages:
-  device_basics: !include display_terminal_packages/device_basics.yaml
+  device_basics: !include packages/device_basics.yaml
   debug_basics: !include shared_packages/debug_basics.yaml
   #  deep_sleep:     !include shared_packages/deep_sleep.yaml
-  standard_fonts: !include display_terminal_packages/standard_fonts.yaml
-  #  colors_themes:  !include display_terminal_packages/colors_themes_dark.yaml
-  colors_themes: !include display_terminal_packages/colors_themes_light.yaml
+  standard_fonts: !include packages/standard_fonts.yaml
+  #  colors_themes:  !include packages/colors_themes_dark.yaml
+  colors_themes: !include packages/colors_themes_light.yaml
 
   ### Seiten
-  #  pages_tabs:     !include display_terminal_packages/pages_tabs.yaml
-  #  page_overview:  !include display_terminal_packages/page_overview.yaml
-  page_attic: !include display_terminal_packages/page_attic.yaml
-  #  page_evcc:      !include display_terminal_packages/page_evcc.yaml
-  #  page_vehicle:   !include display_terminal_packages/page_vehicle.yaml
-  #  page_wlan:      !include display_terminal_packages/page_wlan.yaml
+  #  pages_tabs:     !include packages/pages_tabs.yaml
+  #  page_overview:  !include packages/page_overview.yaml
+  page_attic: !include packages/page_attic.yaml
+  #  page_evcc:      !include packages/page_evcc.yaml
+  #  page_vehicle:   !include packages/page_vehicle.yaml
+  #  page_wlan:      !include packages/page_wlan.yaml
 
   ### Reihenfolge wichtig. Jedes Package wird unterhalb der anderen gemergt und liegt somit weiter "oben" in der Zeichenreihenfolge
-  statusbar: !include display_terminal_packages/statusbar.yaml
-  offline_screen: !include display_terminal_packages/offline_screen.yaml
-  splash_screen: !include display_terminal_packages/splash_screen.yaml
-  screen_dimming: !include display_terminal_packages/screen_dimming.yaml
+  statusbar: !include packages/statusbar.yaml
+  offline_screen: !include packages/offline_screen.yaml
+  splash_screen: !include packages/splash_screen.yaml
+  screen_dimming: !include packages/screen_dimming.yaml
 
 esphome:
   name: ${name}

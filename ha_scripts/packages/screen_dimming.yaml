@@ -1,36 +1,196 @@
+# Screen Dimming & Warning Pulse Animation
+# - Dims display after 10s of inactivity
+# - Pulses backlight when warning is active and display is idle (if enabled)
+# - Touch resets idle timer and stops pulsing
+# - User can enable/disable warning pulse feature via Home Assistant (persisted)
+
+substitutions:
+  # Display backlight timing
+  backlight_fade_in_time: "1s" # Fade-in duration when display becomes active
+  backlight_fade_out_time: "4s" # Fade-out duration when display goes idle
+  display_active_timeout: "10s" # Time before display dims after last touch
+  # A touch must be held CONTINUOUSLY this long before it counts as real (delayed_on
+  # on the screen_touched binary_sensor). Filters GT911 poll glitches (INT pin not
+  # wired on this board -> polling only -> a stuck ready flag is possible).
+  # Tuning: raise it if the screen wakes spontaneously, lower it for faster wake.
+  touch_debounce_time: "100ms"
+
+  # Warning pulse animation timing
+  pulse_fade_in_time: "0.25s" # Pulse fade to bright
+  pulse_fade_out_time: "0.25s" # Pulse fade to dim
+  pulse_dim_hold_time: "10s" # How long to stay dim between pulses
+
+globals:
+  # Current warning state (runtime only, not persisted)
+  - id: warning_active
+    type: bool
+    restore_value: no
+    initial_value: "false"
+
+  # Current display idle state (runtime only, not persisted)
+  - id: display_idle
+    type: bool
+    restore_value: no
+    initial_value: "false"
+
+  # User preference: enable/disable warning pulse animation (persisted across reboots)
+  - id: warning_pulse_enabled
+    type: bool
+    restore_value: yes # Persist setting across reboots
+    initial_value: "true"
+
+light:
+  # Internal display backlight (not exposed to Home Assistant)
+  - platform: monochromatic
+    output: GPIO38
+    id: backlight
+    restore_mode: ALWAYS_ON
+    internal: true # Hide from Home Assistant
+
+switch:
+  # User preference: enable/disable pulse animation feature.
+  # Persistence lives in the global `warning_pulse_enabled` (restore_value: yes).
+  # The switch must NOT restore/act on boot - RESTORE_DEFAULT_ON would fire
+  # turn_on_action on every boot and overwrite the just-restored global, so a
+  # user's "off" choice never survived a reboot. restore_mode: DISABLED keeps the
+  # global authoritative; the `lambda:` below reports the switch state from it.
+  - platform: template
+    name: "Warning Pulse Enabled"
+    id: warning_pulse_enabled_switch
+    icon: "mdi:pulse"
+    restore_mode: DISABLED
+    turn_on_action:
+      - lambda: |-
+          ESP_LOGI("screen_dimming", "Warning pulse feature enabled");
+          id(warning_pulse_enabled) = true;
+      # Start pulse if conditions are met (warning active + display idle)
+      - if:
+          condition:
+            lambda: "return id(warning_active) && id(display_idle);"
+          then:
+            - script.execute: warning_pulse
+    turn_off_action:
+      - lambda: |-
+          ESP_LOGI("screen_dimming", "Warning pulse feature disabled");
+          id(warning_pulse_enabled) = false;
+      - script.stop: warning_pulse # Stop any running pulse immediately
+    lambda: "return id(warning_pulse_enabled);"
+
+script:
+  # Single inactivity timer: started on boot and restarted on every touch (mode:restart).
+  # Replaces the former lvgl.on_idle mechanism so there is only one timer controlling dimming.
+  - id: display_idle_timer
+    mode: restart
+    then:
+      - delay: ${display_active_timeout}
+      - lambda: |-
+          ESP_LOGI("screen_dimming", "Inactivity timer elapsed (${display_active_timeout}) -> marking display idle");
+          id(display_idle) = true;
+      - script.execute: backlight_loop
+
+  # Main script: manages display brightness and LVGL pause/resume based on idle state
+  - id: backlight_loop
+    mode: restart
+    then:
+      - lambda: |-
+          ESP_LOGI("screen_dimming", "Backlight loop: idle=%d, warning=%d, pulse_enabled=%d", 
+                   id(display_idle), id(warning_active), id(warning_pulse_enabled));
+
+      # Branch based on display idle state
+      - if:
+          condition:
+            lambda: "return !id(display_idle);"
+          then:
+            # Display active → turn on backlight and resume LVGL rendering
+            - script.stop: warning_pulse # Stop any running pulse animation
+            - if:
+                condition: lvgl.is_paused
+                then:
+                  - lambda: 'ESP_LOGI("screen_dimming", "Resuming LVGL rendering");'
+                  - lvgl.resume:
+                  - lvgl.widget.redraw:
+            - lambda: 'ESP_LOGI("screen_dimming", "Backlight on (display active)");'
+            - light.turn_on:
+                id: backlight
+                brightness: 100%
+                transition_length: ${backlight_fade_in_time}
+          else:
+            # Display idle → dim backlight and pause LVGL to save resources
+            - lambda: 'ESP_LOGI("screen_dimming", "Dimming backlight & pausing LVGL");'
+            - light.turn_off:
+                id: backlight
+                transition_length: ${backlight_fade_out_time}
+            - delay: ${backlight_fade_out_time} # Wait for fade-out to complete
+            - lvgl.pause:
+                show_snow: true
+            # Start pulse animation if all conditions are met
+            - if:
+                condition:
+                  lambda: "return id(warning_active) && id(warning_pulse_enabled);"
+                then:
+                  - script.execute: warning_pulse
+
+  # Pulse animation: cycles backlight between 0% and 100% while display is idle with active warning
+  - id: warning_pulse
+    mode: restart
+    then:
+      # Loop continues while all three conditions are true
+      - while:
+          condition:
+            lambda: "return id(display_idle) && id(warning_active) && id(warning_pulse_enabled);"
+          then:
+            - lambda: 'ESP_LOGI("screen_dimming", "Pulse cycle: idle + warning + enabled");'
+            - light.turn_on: # Fade to 100% brightness
+                id: backlight
+                brightness: 100%
+                transition_length: ${pulse_fade_in_time}
+            - delay: ${pulse_fade_in_time}
+            - light.turn_off: # Fade to 0% brightness
+                id: backlight
+                transition_length: ${pulse_fade_out_time}
+            - delay: ${pulse_dim_hold_time} # Stay dim before next pulse
+
+      - lambda: 'ESP_LOGI("screen_dimming", "Pulse animation stopped");'
+
+  # Wake + restart the idle timer. Triggered by screen_touched (binary_sensor below)
+  # after a touch has been held continuously for ${touch_debounce_time}.
+  - id: wake_display
+    then:
+      - lambda: 'ESP_LOGI("screen_dimming", "Touch confirmed -> wake + reset idle timer");'
+      - lambda: "id(display_idle) = false;"
+      - script.execute: backlight_loop
+      - script.execute: display_idle_timer
+
 esphome:
   on_boot:
     then:
-      - light.turn_on:
-          id: backlight
-          brightness: 100%
-          transition_length: 2s
+      - lambda: |-
+          ESP_LOGI("screen_dimming", "Boot: initializing runtime state (pulse_enabled=%d)", 
+                   id(warning_pulse_enabled));
+          // Runtime states start fresh (warning_pulse_enabled is restored from flash)
+          id(display_idle) = false;
+          id(warning_active) = false;
+      - script.execute: backlight_loop
+      - script.execute: display_idle_timer # Start inactivity timer immediately on boot
 
-
-
-touchscreen:
-  on_touch:
-    - light.turn_on: backlight
-    - if:
-        condition: lvgl.is_paused
-        then:
-          - lvgl.resume:
-          - lvgl.widget.redraw:
-
-
-
-lvgl:
-
-  on_idle:
-    - timeout: 10s
-      then: # dim display after 10s of idle
-        - logger.log: Dim display after 10s
-        - light.turn_off:
-            id: backlight
-            transition_length: 4s
-
-    - timeout: 14s #!lambda return $display_dim_timeout+$display_dim_down;
-      then: # Activate snow and disable LVGL after display is dimmed 
-        - logger.log: LVGL pause + snow after light was dimmed
-        - lvgl.pause:
-            show_snow: true
+binary_sensor:
+  # Full-screen touch zone with delayed_on as a glitch filter (see touch_debounce_time above).
+  # Replaces the former touch_debounce script + touch_confirm_pending global +
+  # touchscreen: on_touch/on_release. delayed_on only fires if the touch is STILL
+  # present at the end of the window -> a glitch that releases in between is filtered.
+  # (GT911 INT not wired on this board -> polling -> such glitches are possible.)
+  - platform: touchscreen
+    touchscreen_id: $touchscreen_id
+    id: screen_touched
+    internal: true
+    x_min: 0
+    x_max: 480
+    y_min: 0
+    y_max: 480
+    filters:
+      - delayed_on: ${touch_debounce_time}
+    on_press:
+      - script.execute: wake_display
+    on_release:
+      # Restart the idle timer from the release (end of a real interaction).
+      - script.execute: display_idle_timer
