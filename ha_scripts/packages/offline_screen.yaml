@@ -1,19 +1,29 @@
+---
+#-------------------------------------------
+# Offline Screen Configuration
+# Displays an overlay when Home Assistant connection is lost
+#-------------------------------------------
+
 substitutions:
-  offline_image_path: 'images/offline.png' 
+  offline_image_path: "images/offline.png" # Path to offline indicator image
 
 #-------------------------------------------
-# Colors
+# Color Definitions
 #-------------------------------------------
 color:
-  - id: offline_screen_bg_color
+  - id: offline_screen_bg_color # Black background for offline screen
     red: 0
     green: 0
     blue: 0
 
+#-------------------------------------------
+# LVGL Top Layer Widgets
+# Overlay screen shown when disconnected from Home Assistant
+#-------------------------------------------
 lvgl:
   top_layer:
     widgets:
-##### OVERLAY SCREEN IN CASE TERMINAL IS OFFLINE (DISCONNECTED FROM HA)
+      # Full-screen overlay for offline state
       - obj:
           id: offline_screen
           x: 0
@@ -21,45 +31,62 @@ lvgl:
           width: 100%
           height: 100%
           bg_color: offline_screen_bg_color
-          bg_opa: COVER
-          radius: 0
-          pad_all: 0
-          border_width: 0
+          bg_opa: COVER # Fully opaque background
+          radius: 0 # No rounded corners
+          pad_all: 0 # No padding
+          border_width: 0 # No border
           layout:
             type: grid
-            grid_columns: [fr(1)]
-            grid_rows: [fr(1)]
+            grid_columns: [fr(1)] # Single column
+            grid_rows: [fr(1)] # Single row
           widgets:
-          - image:
-              grid_cell_row_pos: 0
-              grid_cell_column_pos: 0
-              grid_cell_x_align: CENTER
-              grid_cell_y_align: CENTER
-              src: offline_image
+            # Centered offline image
+            - image:
+                grid_cell_row_pos: 0
+                grid_cell_column_pos: 0
+                grid_cell_x_align: CENTER
+                grid_cell_y_align: CENTER
+                src: offline_image
 #              y: -100
 
-
+#-------------------------------------------
+# API Event Handlers
+# Show/hide offline screen based on Home Assistant connection
+#-------------------------------------------
 api:
+  # Hide offline screen when Home Assistant connects
   on_client_connected:
-    - if:
-        condition:
-          lambda: 'return (0 == client_info.find("Home Assistant "));'
-        then:
-          - logger.log: "HA connected"
-          - lvgl.widget.hide: offline_screen
+    - lambda: 'ESP_LOGI("${TAG}", "HA connected");'
+    - lvgl.widget.hide: offline_screen
 
+  # Show offline screen when Home Assistant disconnects
   on_client_disconnected:
-    - if:
-        condition:
-          lambda: 'return (0 == client_info.find("Home Assistant "));'
-        then:
-          - logger.log: "HA disconnected"
-          - lvgl.widget.show: offline_screen
+    - lambda: 'ESP_LOGI("${TAG}", "HA disconnected");'
+    - lvgl.widget.show: offline_screen
 
-   
+esphome:
+  on_boot:
+    priority: -50
+    then:
+      # Give LVGL / network / API a short moment to initialize after flash/boot
+      - delay: 5s
+      - if:
+          condition: api.connected
+          then:
+            - lambda: 'ESP_LOGD("${TAG}", "Boot: HA connected -> hide offline overlay");'
+            - lvgl.widget.hide: offline_screen
+          else:
+            - lambda: 'ESP_LOGD("${TAG}", "Boot: HA not connected -> show offline overlay");'
+            - lvgl.widget.show: offline_screen
+
+#-------------------------------------------
+# Image Resources
+# NOTE: migrated to the new image: platform format (platform: file)
+#-------------------------------------------
 image:
-  - file: $offline_image_path
+  - platform: file
+    file: $offline_image_path
     id: offline_image
-    type: RGB565
-    transparency: alpha_channel
+    type: RGB565 # 16-bit color format for display
+    transparency: alpha_channel # Support transparency
 #    resize: 150x150

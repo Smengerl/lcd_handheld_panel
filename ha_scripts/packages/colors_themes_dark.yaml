@@ -1,5 +1,13 @@
+#-------------------------------------------
+# Dark Theme Color Palette and LVGL Styling
+# Defines a dark color scheme for the display terminal UI
+#-------------------------------------------
+
 substitutions:
-  ### fonts
+  #-------------------------------------------
+  # Color ID Definitions
+  # References used throughout the theme configuration
+  #-------------------------------------------
   label_color: label_color
 
   button_bg_checked: button_bg_checked
@@ -14,38 +22,43 @@ substitutions:
   bg_color: bg_color
   glow_color: glow_color
 
-  engineering_outline_width: "1"
-  engineering_outline_color: "0xFFC0CB"
+  #-------------------------------------------
+  # Engineering/Debug Outline Settings
+  #-------------------------------------------
+  engineering_outline_width: "1"        # Debug outline thickness
+  engineering_outline_color: "0xFFC0CB" # Pink debug outline color
 
 #-------------------------------------------
-# Colors
+# Color Definitions
+# Dark theme color palette
 #-------------------------------------------
 color:
   - id: $label_color
-    hex: EEEEEE # light gray
+    hex: EEEEEE # Light gray for text labels
 
-    # Button Enabled + Checked
+    # Button colors - Enabled and Checked state
   - id: $button_bg_checked
-    hex: 79b8e7 # light blue
+    hex: 79b8e7 # Light blue background
   - id: $button_texticon_checked
-    hex: bedef4 # very light gray
+    hex: bedef4 # Very light blue for text/icons
 
-    # Button Enabled but unchecked
+    # Button colors - Enabled but Unchecked state
   - id: $button_bg_unchecked
-    hex: 3498DB # medium blue
+    hex: 3498DB # Medium blue background
   - id: $button_texticon_unchecked
-    hex: AED6F1 # light blue
+    hex: AED6F1 # Light blue for text/icons
 
-    # Button disabled
+    # Button colors - Disabled state
   - id: $button_bg_disabled
-    hex: 313131 # medium gray
+    hex: 313131 # Medium gray background
   - id: $button_texticon_disabled
-    hex: B6B6B6 # light gray
+    hex: B6B6B6 # Light gray for text/icons
 
+  # Additional UI colors
   - id: $glow_color
-    hex: d5d5d5
+    hex: d5d5d5  # Light gray glow effect
 
-  - id: $bg_color
+  - id: $bg_color    # Black background
     red: 0
     green: 0
     blue: 0
@@ -54,15 +67,20 @@ color:
   #- id: text_color
   #  hex: 333333 # gray
 
+#-------------------------------------------
+# LVGL Theme Configuration
+# Defines default styling for all UI widgets
+#-------------------------------------------
 lvgl:
   default_font: $text_font
   theme:
-    obj: # Default theming for all widget unless further specified
+    # Default styling applied to all widgets unless overridden
+    obj:
       outline_width: $engineering_outline_width
       outline_color: $engineering_outline_color
-      radius: 0
-      pad_all: 0
-      bg_opa: transp
+      radius: 0               # No rounded corners by default
+      pad_all: 0              # No padding
+      bg_opa: transp          # Transparent background
       scroll_on_focus: false
       scrollable: false
       scrollbar_mode: "OFF"
@@ -70,12 +88,13 @@ lvgl:
         bg_color: $button_bg_checked
         text_color: $button_texticon_checked
 
+    # Button-specific styling
     button:
       outline_width: $engineering_outline_width
       outline_color: $engineering_outline_color
       text_font: $text_font
       scroll_on_focus: true
-      radius: 25
+      radius: 25              # Rounded corners for buttons
       pad_left: 10px
       pad_top: 10px
       pad_bottom: 10px
@@ -90,6 +109,7 @@ lvgl:
         bg_color: $button_bg_disabled
         text_color: $button_texticon_disabled
 
+    # Label text styling
     label:
       outline_width: $engineering_outline_width
       outline_color: $engineering_outline_color
@@ -99,9 +119,11 @@ lvgl:
       #      text_opa: TRANSP
       bg_opa: TRANSP
 
+    # Image widget styling
     image:
       bg_opa: TRANSP
 
+    # Line widget styling
     line:
       bg_opa: TRANSP
 
@@ -110,6 +132,7 @@ lvgl:
     #      outline_width: $engineering_outline_width
     #      outline_color: $engineering_outline_color
 
+    # Progress bar styling
     bar:
       outline_width: $engineering_outline_width
       outline_color: $engineering_outline_color
@@ -124,7 +147,12 @@ lvgl:
       border_width: 1
       border_color: button_bg_checked
 
+  #-------------------------------------------
+  # Custom Style Definitions
+  # Reusable style presets for specific UI elements
+  #-------------------------------------------
   style_definitions:
+    # Tab button style
     - id: style_tabs
       radius: 0
       pad_all: 5px
@@ -134,12 +162,13 @@ lvgl:
       text_color: $button_texticon_unchecked
       bg_opa: COVER
 
+    # Status bar at top of screen
     - id: style_statusbar
       bg_color: $bg_color
       bg_opa: COVER
       border_opa: COVER
       border_color: $label_color
-      border_side: BOTTOM
+      border_side: BOTTOM      # Only bottom border
       border_width: 1
       radius: 0
       scrollbar_mode: "OFF"
@@ -149,6 +178,7 @@ lvgl:
       pad_top: 0px
       width: 100%
 
+    # Box/container style with glow effect
     - id: style_box
       border_width: 1
       border_color: $button_texticon_disabled
@@ -159,6 +189,6 @@ lvgl:
         - RIGHT
       bg_color: $bg_color
       bg_opa: COVER
-      shadow_width: 55
+      shadow_width: 55        # Wide shadow for glow effect
       shadow_color: $glow_color
       scrollbar_mode: "OFF"

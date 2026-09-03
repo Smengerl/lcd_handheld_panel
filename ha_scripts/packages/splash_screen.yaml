@@ -1,6 +1,6 @@
 substitutions:
-  splash_screen_image_path: 'images/splash_screen.png'
-
+  splash_screen_image_path: "images/splash_screen.png"
+  splash_screen_duration: "10s"
 #-------------------------------------------
 # Colors
 #-------------------------------------------
@@ -15,21 +15,16 @@ color:
 esphome:
   on_boot:
     then:
-      - logger.log: "Starting. Show splashsreen"
-#      - light.turn_on:
-#          id: backlight
-#          brightness: 100%
-#          transition_length: 3s
-      - delay: 10s
+      - lambda: 'ESP_LOGD("${TAG}", "Showing splash screen");'
+      - delay: $splash_screen_duration
       - lvgl.widget.hide: splash_screen
-      - logger.log: "Splashscreen hidden"
-
+      - lambda: 'ESP_LOGD("${TAG}", "Splash screen hidden");'
 
 lvgl:
   top_layer:
     widgets:
-##### OVERLAY SCREEN DURING STARTUP/SPLASH SCREEN
-      - obj:  
+      ##### OVERLAY SCREEN DURING STARTUP/SPLASH SCREEN
+      - obj:
           id: splash_screen
           x: 0
           y: 0
@@ -60,7 +55,6 @@ lvgl:
                 grid_cell_x_align: CENTER
                 grid_cell_y_align: START
 
-
                 height: 50
                 width: 50
                 spin_time: 1s
@@ -73,9 +67,10 @@ lvgl:
           on_press:
             - lvgl.widget.hide: splash_screen
 
-
+# NOTE: migrated to the new image: platform format (platform: file)
 image:
-  - file: $splash_screen_image_path
+  - platform: file
+    file: $splash_screen_image_path
     id: splash_screen_image
     type: RGB565
     transparency: alpha_channel

@@ -70,11 +70,11 @@ This example integrates the display with Home Assistant using ESPHome.
 
 #### Installation
 
-1. Register the ESP32 with ESPHome (e.g., via ESPHome Web).
-2. Rename the device to matrix-display (so that `display-terminal-upper.yaml` is the .yaml of your ESP home configuration for the device)
-3. Copy the contents of [./ha_scripts](././ha_scripts) to the folder `[homeassistant]/config/esphome`, replacing `display-terminal-upper.yaml` 
+1. Register the ESP32 with ESPHome (e.g., via ESPHome Web) and name it `display-terminal-upper`, so that `display-terminal-upper.yaml` becomes its configuration file.
+2. Copy the contents of [./ha_scripts](./ha_scripts) into `[homeassistant]/config/esphome`, replacing `display-terminal-upper.yaml`.
+3. Provide `wifi_ssid` / `wifi_password` in your `secrets.yaml`, and regenerate the `api_key` / `ota_pw` placeholders at the top of `display-terminal-upper.yaml`.
 4. Open `display-terminal-upper.yaml` in ESPHome and upload the configuration to the device.
-5. Once installed, the device will appear in Home Assistant. Set up the device giving it a name and you are ready to go. 
+5. Once installed, the device appears in Home Assistant. Give it a name and you are ready to go.
 
 
 #### Usage

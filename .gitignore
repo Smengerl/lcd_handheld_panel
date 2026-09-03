@@ -1,2 +1,6 @@
 /.DS_Store
 /print/assembly.mp4
+
+# ESPHome
+ha_scripts/secrets.yaml
+ha_scripts/.esphome/

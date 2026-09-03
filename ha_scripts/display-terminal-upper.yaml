@@ -1,35 +1,44 @@
+#-------------------------------------------
+# Wireless Smart Home Control Panel - example ESPHome config
+#
+# A minimal, self-contained version of the terminal shown in the project photos.
+# It demonstrates a modular, extensible package layout and the LVGL wiring needed
+# to drive the display + touch on this hardware. All dependencies on a specific
+# smart home have been removed, so it compiles and runs without any matching
+# entities - the buttons on the example page therefore only write log lines.
+# Adapt them to your own setup (see packages/page_attic.yaml).
+#-------------------------------------------
+
 substitutions:
   name: "display-terminal-upper"
-  friendly_name: "Display_Terminal_Upper"
-  comment: Multi purpose touchscreen display in upper level
-  project_name: display_terminal_upper.esphome
+  friendly_name: "Display Terminal"
+  comment: Wireless smart home control panel
+  project_name: display_terminal.esphome
 
   TAG: "display-terminal-upper.yaml"
 
-  api_key: "Xp9sLw3eVt6yQmZrBn8oKjHdFg5uTnCvYx2aWqMzErU="
-  ota_pw: "f375953f2b3f26e921df4dd1dd5f6cce"
-  fallback_hotspot_ssid: "Display-Terminal-Upper"
-  fallback_hotspot_pw: "jBzacNOvPuzt"
-
-  initial_tab: $page_attic_friendly_name
+  # See secrets.yaml.example - copy it to secrets.yaml and fill in your values.
+  api_key: !secret display_terminal_api_key
+  ota_pw: !secret display_terminal_ota_pw
+  fallback_hotspot_ssid: "Display-Terminal"
+  fallback_hotspot_pw: !secret display_terminal_fallback_pw
 
 packages:
   device_basics: !include packages/device_basics.yaml
   debug_basics: !include shared_packages/debug_basics.yaml
   #  deep_sleep:     !include shared_packages/deep_sleep.yaml
   standard_fonts: !include packages/standard_fonts.yaml
-  #  colors_themes:  !include packages/colors_themes_dark.yaml
+
+  # Theme: light is loaded, dark is the alternative
   colors_themes: !include packages/colors_themes_light.yaml
+  #  colors_themes:  !include packages/colors_themes_dark.yaml
 
-  ### Seiten
-  #  pages_tabs:     !include packages/pages_tabs.yaml
-  #  page_overview:  !include packages/page_overview.yaml
+  ### Pages - add your own here (one file per page, same structure as page_attic)
   page_attic: !include packages/page_attic.yaml
-  #  page_evcc:      !include packages/page_evcc.yaml
-  #  page_vehicle:   !include packages/page_vehicle.yaml
-  #  page_wlan:      !include packages/page_wlan.yaml
 
-  ### Reihenfolge wichtig. Jedes Package wird unterhalb der anderen gemergt und liegt somit weiter "oben" in der Zeichenreihenfolge
+  ### Order matters: each package is merged below the previous ones and therefore
+  ### sits "higher" in the LVGL draw order. Overlays (status bar, offline, splash)
+  ### come last so they stay on top.
   statusbar: !include packages/statusbar.yaml
   offline_screen: !include packages/offline_screen.yaml
   splash_screen: !include packages/splash_screen.yaml
@@ -39,7 +48,7 @@ esphome:
   name: ${name}
   friendly_name: ${friendly_name}
   comment: ${comment}
-  min_version: 2024.7.0
+  min_version: "2026.8.1"
   project:
     name: ${project_name}
     version: "1.0"

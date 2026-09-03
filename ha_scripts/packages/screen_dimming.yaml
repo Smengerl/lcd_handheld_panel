@@ -42,7 +42,7 @@ globals:
 light:
   # Internal display backlight (not exposed to Home Assistant)
   - platform: monochromatic
-    output: GPIO38
+    output: backlight_output
     id: backlight
     restore_mode: ALWAYS_ON
     internal: true # Hide from Home Assistant
