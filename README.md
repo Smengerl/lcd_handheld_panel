@@ -23,10 +23,6 @@ A mobile control panel with LCD touchscreen for smart home operation. Convenient
 
 ![Assembly overview](./print/zsb/full.png)
 
-| Example 1 | Example 2 |
-| --------- | --------- |
-| <img src="./print/example_1.jpg" width="300" > | <img src="./print/example_2.jpg" width="300" > |
-
 ## Examples
 
 Some of the pages I use on my own panels (ESPHome + LVGL, 480×480 px). The images are clean renderings of the real screens, drawn from the actual layout and design tokens.
