@@ -1,6 +1,8 @@
 
 # Wireless Smart Home Control Panel
 
+![Smart home control panel](./docs/hero.jpg)
+
 [![3D Printing](https://img.shields.io/badge/3D_printing-STL-green)](#)
 [![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue)](http://creativecommons.org/licenses/by-sa/4.0/)
 
@@ -8,6 +10,7 @@ A mobile control panel with LCD touchscreen for smart home operation. Convenient
 
 ## Table of Contents
 - [Overview](#overview)
+- [Examples](#examples)
 - [3D-Printed Parts](#3d-printed-parts)
 - [Standard Hardware](#standard-hardware)
 - [Assembly](#assembly)
@@ -23,6 +26,17 @@ A mobile control panel with LCD touchscreen for smart home operation. Convenient
 | Example 1 | Example 2 |
 | --------- | --------- |
 | <img src="./print/example_1.jpg" width="300" > | <img src="./print/example_2.jpg" width="300" > |
+
+## Examples
+
+Some of the pages I use on my own panels (ESPHome + LVGL, 480×480 px). The images are clean renderings of the real screens, drawn from the actual layout and design tokens.
+
+| | | |
+| :---: | :---: | :---: |
+| <img src="./docs/examples/overview.png" width="260" alt="Overview page"> | <img src="./docs/examples/energy.png" width="260" alt="Energy page"> | <img src="./docs/examples/evcc.png" width="260" alt="EV charging page"> |
+| <img src="./docs/examples/printer.png" width="260" alt="3D printer page"> | <img src="./docs/examples/attic.png" width="260" alt="Room controls page"> | <img src="./docs/examples/wifi.png" width="260" alt="Guest Wi-Fi page"> |
+
+The example configuration in [`ha_scripts`](./ha_scripts) contains the modular structure and one page (room controls) without dependencies on my setup. The other pages depend on specific integrations (solar inverter, [evcc](https://evcc.io), Bambu Lab printer) and are shown here as inspiration.
 
 ## 3D-Printed Parts
 
