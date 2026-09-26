@@ -35,8 +35,9 @@ Some of the pages I use on my own panels (ESPHome + LVGL, 480×480 px). The imag
 | :---: | :---: | :---: |
 | <img src="./docs/examples/overview.png" width="260" alt="Overview page"> | <img src="./docs/examples/energy.png" width="260" alt="Energy page"> | <img src="./docs/examples/evcc.png" width="260" alt="EV charging page"> |
 | <img src="./docs/examples/printer.png" width="260" alt="3D printer page"> | <img src="./docs/examples/attic.png" width="260" alt="Room controls page"> | <img src="./docs/examples/wifi.png" width="260" alt="Guest Wi-Fi page"> |
+| | <img src="./docs/examples/doorbell.png" width="260" alt="Doorbell popup"> | |
 
-The example configuration in [`ha_scripts`](./ha_scripts) contains the modular structure and one page (room controls) without dependencies on my setup. The other pages depend on specific integrations (solar inverter, [evcc](https://evcc.io), Bambu Lab printer) and are shown here as inspiration.
+The example configuration in [`ha_scripts`](./ha_scripts) contains the modular structure and one page (room controls) without dependencies on my setup. The other pages depend on specific integrations (solar inverter, [evcc](https://evcc.io), Bambu Lab printer, doorbell camera) and are shown here as inspiration.
 
 ## 3D-Printed Parts
 
