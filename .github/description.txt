@@ -1,1 +1,1 @@
-3D-printed wireless touchscreen control panel for smarthome
+3D-printed, wirelessly charged 4″ touchscreen panel for Home Assistant (ESPHome + LVGL)

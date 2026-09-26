@@ -1,0 +1,61 @@
+#-------------------------------------------
+# Wireless Smart Home Control Panel - example ESPHome config
+#
+# Hardware: Guition ESP32-S3-4848S040 (4", 480x480, ST7701S + GT911 touch).
+# A minimal, self-contained version of the panel shown in the README. It
+# demonstrates a modular package layout, the design tokens (colors, sizes,
+# fonts in one place) and the LVGL wiring for display + touch. There are no
+# dependencies on a specific smart home: it compiles and runs without matching
+# entities. Adapt the example page to your setup
+# (see handheld_panel/packages/page_room_controls.yaml).
+#
+# The device name must match this file name: a device called "handheld-panel"
+# uses handheld-panel.yaml. Rename both if you like.
+#-------------------------------------------
+
+substitutions:
+  name: "handheld-panel"
+  friendly_name: "Handheld Panel"
+  comment: Wireless smart home control panel
+  project_name: handheld_panel.esphome
+
+  TAG: "handheld-panel"
+
+  # See secrets.yaml.example - add these keys to your secrets.yaml.
+  api_key: !secret handheld_panel_api_key
+  ota_pw: !secret handheld_panel_ota_pw
+  fallback_hotspot_ssid: "Handheld-Panel"
+  fallback_hotspot_pw: !secret handheld_panel_fallback_pw
+
+packages:
+  device_basics: !include handheld_panel/packages/device_basics.yaml
+  debug_basics: !include handheld_panel/shared_packages/debug_basics.yaml
+  standard_fonts: !include handheld_panel/packages/standard_fonts.yaml
+
+  # Design tokens + theme: light is loaded, dark is the alternative
+  colors_themes: !include handheld_panel/packages/colors_themes_light.yaml
+  #  colors_themes: !include handheld_panel/packages/colors_themes_dark.yaml
+
+  ### Pages - one file per page; add a tab for each in pages_tabs.yaml
+  pages_tabs: !include handheld_panel/packages/pages_tabs.yaml
+  page_room_controls: !include handheld_panel/packages/page_room_controls.yaml
+
+  ### Order matters: each package is merged below the previous ones and therefore
+  ### sits "higher" in the LVGL draw order. Overlays (header, offline, splash)
+  ### come last so they stay on top.
+  statusbar: !include handheld_panel/packages/statusbar.yaml
+  offline_screen: !include handheld_panel/packages/offline_screen.yaml
+  splash_screen: !include handheld_panel/packages/splash_screen.yaml
+  screen_dimming: !include handheld_panel/packages/screen_dimming.yaml
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+  comment: ${comment}
+  min_version: "2026.8.1"
+  project:
+    name: ${project_name}
+    version: "1.0"
+  platformio_options:
+    board_build.flash_mode: dio
+  compile_process_limit: 1

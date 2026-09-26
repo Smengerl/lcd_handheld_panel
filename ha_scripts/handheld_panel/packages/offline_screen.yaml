@@ -5,7 +5,7 @@
 #-------------------------------------------
 
 substitutions:
-  offline_image_path: "images/offline.png" # Path to offline indicator image
+  offline_image_path: "handheld_panel/images/offline.png" # Path to offline indicator image
 
 #-------------------------------------------
 # Color Definitions
@@ -59,10 +59,24 @@ api:
     - lambda: 'ESP_LOGI("${TAG}", "HA connected");'
     - lvgl.widget.hide: offline_screen
 
-  # Show offline screen when Home Assistant disconnects
+  # Show offline screen only when Home Assistant is really gone. This trigger
+  # fires for EVERY API client that disconnects - also transient ones like an
+  # ESPHome log stream / dashboard - which used to blank the screen although HA
+  # was still connected. state_subscription_only: true counts only clients that
+  # subscribe to states (HA does, log viewers don't). The 2 s pause lets the
+  # disconnecting client drop out of the client list first and lets HA reconnect
+  # after a short WiFi/API blip without flashing the overlay.
   on_client_disconnected:
-    - lambda: 'ESP_LOGI("${TAG}", "HA disconnected");'
-    - lvgl.widget.show: offline_screen
+    - lambda: 'ESP_LOGI("${TAG}", "API client disconnected");'
+    - delay: 2s
+    - if:
+        condition:
+          not:
+            api.connected:
+              state_subscription_only: true
+        then:
+          - lambda: 'ESP_LOGI("${TAG}", "HA gone -> show offline overlay");'
+          - lvgl.widget.show: offline_screen
 
 esphome:
   on_boot:

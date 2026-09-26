@@ -1,25 +1,24 @@
-
 # Wireless Smart Home Control Panel
 
 ![Smart home control panel](./docs/hero.jpg)
 
-[![3D Printing](https://img.shields.io/badge/3D_printing-STL-green)](#)
+[![3D Printing](https://img.shields.io/badge/3D_printing-STL-green)](#3d-printed-parts)
 [![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue)](http://creativecommons.org/licenses/by-sa/4.0/)
 
-A mobile control panel with LCD touchscreen for smart home operation. Conveniently wireless rechargeable via Qi and magnetically centered with Magsafe. Can be used, for example, with Home Assistant via ESPHome.
+A 3D-printed, battery-powered 4″ touchscreen (480×480) for Home Assistant, built with ESPHome and LVGL. It charges wirelessly via Qi and snaps onto its charger with a MagSafe-compatible magnetic ring.
 
 ## Table of Contents
-- [Overview](#overview)
+- [Design](#design)
 - [Examples](#examples)
 - [3D-Printed Parts](#3d-printed-parts)
 - [Standard Hardware](#standard-hardware)
 - [Assembly](#assembly)
-- [Usage](#usage)
+- [Software](#software)
 - [Development](#development)
 - [License](#license)
 - [Authors](#authors)
 
-## Overview
+## Design
 
 ![Assembly overview](./print/zsb/full.png)
 
@@ -33,68 +32,70 @@ Some of the pages I use on my own panels (ESPHome + LVGL, 480×480 px). The imag
 | <img src="./docs/examples/printer.png" width="260" alt="3D printer page"> | <img src="./docs/examples/attic.png" width="260" alt="Room controls page"> | <img src="./docs/examples/wifi.png" width="260" alt="Guest Wi-Fi page"> |
 | | <img src="./docs/examples/doorbell.png" width="260" alt="Doorbell popup"> | |
 
-The example configuration in [`ha_scripts`](./ha_scripts) contains the modular structure and one page (room controls) without dependencies on my setup. The other pages depend on specific integrations (solar inverter, [evcc](https://evcc.io), Bambu Lab printer, doorbell camera) and are shown here as inspiration.
+The example configuration in [`ha_scripts`](./ha_scripts) contains the room-controls page in exactly this design, together with the header, icon tab bar and design tokens, without any dependency on my setup. The other pages depend on specific integrations (solar inverter, [evcc](https://evcc.io), Bambu Lab printer, doorbell camera) and are shown here as inspiration.
 
 ## 3D-Printed Parts
 
 See the `print/stl/` and `print/png/` folders for all printable parts and preview images.
 
+Print settings: PETG, 0.2 mm layer height, no supports.
+
 | Filename                  | Thumbnail                                                        | Required | Notes |
 | ------------------------- | ----------------------------------------------------------------| -------- | ----- |
-| `./print/lower_part.stl`  | <img src="./print/png/lower_part.png" alt="Lower part" width="300"/> | 1        |       |
-| `./print/middle_part.stl` | <img src="./print/png/middle_part.png" alt="Middle part" width="300"/> | 1        |       |
-| `./print/upper_part.stl`  | <img src="./print/png/upper_part.png" alt="Upper part" width="300"/> | 1        |       |
+| `./print/stl/lower_part.stl`  | <img src="./print/png/lower_part.png" alt="Lower part" width="300"/> | 1        |       |
+| `./print/stl/middle_part.stl` | <img src="./print/png/middle_part.png" alt="Middle part" width="300"/> | 1        |       |
+| `./print/stl/upper_part.stl`  | <img src="./print/png/upper_part.png" alt="Upper part" width="300"/> | 1        |       |
 
 ## Standard Hardware
 
-- Wireless charging coil: https://de.aliexpress.com/item/1005005909809714.html
-- Magsafe ring: https://de.aliexpress.com/item/1005006588934001.html
-- LiPo battery 3.7V, 500mAh: https://de.aliexpress.com/item/1005006646150179.html
-- LCD panel with touchscreen: https://de.aliexpress.com/item/1005006622809642.html
+- Display: Guition ESP32-S3-4848S040 — 4″ IPS, 480×480, ST7701S display driver, GT911 touch, ESP32-S3 on board: https://de.aliexpress.com/item/1005006622809642.html
+- Qi wireless charging receiver with integrated charge controller: https://de.aliexpress.com/item/1005005909809714.html
+- MagSafe-compatible magnetic ring: https://de.aliexpress.com/item/1005006588934001.html
+- LiPo battery 3.7 V, 500 mAh: https://de.aliexpress.com/item/1005006646150179.html
 - 4 sheet metal screws, 8 mm
 
 ## Assembly
 
-- Glue the Magsafe ring and charging coil into the lower part. 
-- Route the cables through the opening in the middle part and place the middle part onto the lower part. 
-- Glue the LiPo battery into the middle part, solder it to the charging controller, and also solder the charging coil cables. 
-- Connect the display to the charging controller and place it on top. 
+- Glue the magnetic ring and the charging coil into the lower part.
+- Route the cables through the opening in the middle part and place the middle part onto the lower part.
+- Glue the LiPo battery into the middle part and solder it and the charging coil to the charge controller of the Qi receiver.
+- Connect the display to the charge controller and place it on top.
 - Finally, place the upper part over the display and fasten it to the lower part using the sheet metal screws.
 
 <img src="./print/assembly.gif">
 
+## Software
 
+The panel can run anything the ESP32-S3 supports. This repository contains an example for Home Assistant with ESPHome and LVGL.
 
+### Prerequisites
 
-## Usage
+- [Home Assistant](https://www.home-assistant.io)
+- [ESPHome](https://esphome.io) 2026.8.1 or newer, e.g. the ESPHome Device Builder add-on in Home Assistant
 
-The display can be used for various applications. Below are some examples:
+### Installation
 
-### Home assistant control panel
+1. In the ESPHome Device Builder, create a new device called `handheld-panel` (any name works, as long as the YAML file carries the same name).
+2. Copy `handheld-panel.yaml` and the `handheld_panel` folder from [`ha_scripts`](./ha_scripts) into your ESPHome config folder (`[homeassistant]/config/esphome`) and replace the generated `handheld-panel.yaml` with it. Everything else lives inside `handheld_panel/`, so existing files of other devices are not touched.
+3. Add the keys from [`secrets.yaml.example`](./ha_scripts/secrets.yaml.example) to your `secrets.yaml` in the same folder (append them if the file already exists) and fill in your own values.
+4. Optional: set `outdoor_temperature_entity_id` in `handheld_panel/packages/statusbar.yaml` to a temperature sensor of yours. Without it the header shows `--°C`.
+5. Install the configuration on the device from the Device Builder (the first time via USB).
+6. Home Assistant discovers the device; add it and you are ready to go.
 
-This example integrates the display with Home Assistant using ESPHome.
+### What the example does
 
-#### Prerequisites
+The example is a minimal version of the panel I use myself. It demonstrates:
 
-- home assistant
-- ESP home
+- a modular, extensible YAML structure (one package per page, shared base packages)
+- design tokens: colors, sizes and fonts are defined in one place (`colors_themes_*.yaml`, `standard_fonts.yaml`); pages only use tokens and a few shared styles
+- a header with icon tabs, outdoor temperature and clock, plus screen dimming, a splash screen and an offline overlay
+- the room-controls page shown above
 
-#### Installation
-
-1. Register the ESP32 with ESPHome (e.g., via ESPHome Web) and name it `display-terminal-upper`, so that `display-terminal-upper.yaml` becomes its configuration file.
-2. Copy the contents of [./ha_scripts](./ha_scripts) into `[homeassistant]/config/esphome`, replacing `display-terminal-upper.yaml`.
-3. Provide `wifi_ssid` / `wifi_password` in your `secrets.yaml`, and regenerate the `api_key` / `ota_pw` placeholders at the top of `display-terminal-upper.yaml`.
-4. Open `display-terminal-upper.yaml` in ESPHome and upload the configuration to the device.
-5. Once installed, the device appears in Home Assistant. Give it a name and you are ready to go.
-
-
-#### Usage
-
-The scripts are a minimal version of the terminal that I use myself (as shown in the photo) and are intended to demonstrate a modular and extensible YAML structure, as well as the code required to use the display with LVGL in ESPHome. All dependencies on my specific smart home setup have been removed, so they can be executed without needing the same sensor/entity configuration. However, the buttons are therefore not functional and only produce log outputs; you will need to adapt them to your own smart home.
+It has no dependencies on a specific smart home, so it compiles and runs without matching entities. The shutter buttons only write log lines and the switches toggle locally; the comments in `page_room_controls.yaml` show how to call Home Assistant instead.
 
 ## Development
 
-Contributions are welcome!  
+Contributions are welcome!
 See `CONTRIBUTING.md` for details and follow the `CODE_OF_CONDUCT.md` when contributing.
 
 All .stl, .png, and assembly pictures are automatically exported via my Fusion add-in, see [here](https://github.com/smengerl/fusion-exporter).
@@ -105,7 +106,7 @@ This project is licensed under the Creative Commons Attribution-ShareAlike 4.0 I
 
 ## Authors
 
-- Simon Gerlach <https://github.com/Smenger>
+- Simon Gerlach <https://github.com/Smengerl>
 
 ---
 

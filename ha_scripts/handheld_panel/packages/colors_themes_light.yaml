@@ -1,0 +1,146 @@
+#-------------------------------------------
+# Light theme - design tokens + LVGL theme for both display terminals.
+# Pages use ONLY these tokens/styles: no hex colors, radii, border widths or
+# font IDs of their own. Exceptions: 0 (none), 999 (circle), fine offsets.
+# The dark theme defines the same token names with other values.
+# Note: scrollable / scrollbar_mode / scroll_on_focus are widget properties,
+# not LVGL styles - ESPHome silently ignores them here, so every panel sets
+# them itself.
+#-------------------------------------------
+substitutions:
+  ### Colors (hex strings: usable in YAML and in lambdas via lv_color_hex(${c_...}))
+  c_bg: "0xFFFFFF"                # page + card background
+  c_text: "0x222222"            # text, icons, scrims (with opacity)
+  c_muted: "0x666666"          # secondary text: units, captions, hints
+  c_line: "0xB6B6B6"            # outlines, tracks, placeholders, shadow, disabled text
+  c_accent: "0x3498DB"        # buttons, tabs, grid feed-in, water
+  c_accent_light: "0x81BAE9"  # active button/tab, text on accent
+  c_disabled: "0x313131"    # disabled button background
+  c_solar: "0xF5B041"          # solar power / yield, gas
+  c_good: "0x43A047"            # house battery, good CO2 balance
+  c_bad: "0xD9534F"              # grid import, bad CO2 balance, errors
+
+  ### Shape
+  r_card: "5"                   # all panels, tiles, tabs, bars, pills
+  r_button: "25"                # pill-shaped buttons and sliders
+  bw: "1"                       # outline width
+
+  ### Spacing (px)
+  sp_page: "10"                 # page margin
+  sp_gap: "8"                   # gap between tiles/cards, card padding, top/bottom page margin
+  sp_baseline: "5"              # lifts small units onto the baseline of a large value
+
+  ### Sizes (px)
+  y_content: "71"               # first content row: status bar + tab bar (63) + sp_gap
+  h_tile: "90"                  # tile rows, panel rows and button rows
+  w_tab: "58"                   # icon-only tab (32 px icon)
+
+  ### Debug
+  engineering_outline_width: "0"
+  engineering_outline_color: "0xFFC0CB"
+
+lvgl:
+  default_font: $f_normal
+  theme:
+    obj: # reset for every container
+      outline_width: $engineering_outline_width
+      outline_color: $engineering_outline_color
+      radius: 0
+      pad_all: 0
+      bg_opa: TRANSP
+      border_width: 0
+      checked:
+        bg_color: ${c_accent_light}
+        text_color: ${c_text}
+
+    button:
+      outline_width: $engineering_outline_width
+      outline_color: $engineering_outline_color
+      text_font: $f_normal
+      radius: ${r_button}
+      pad_all: ${sp_page}px
+      shadow_width: 0
+      bg_opa: COVER
+      bg_color: ${c_accent}
+      text_color: ${c_accent_light}
+      checked:
+        bg_color: ${c_accent_light}
+        text_color: ${c_text}
+      disabled:
+        bg_color: ${c_disabled}
+        text_color: ${c_line}
+
+    label:
+      outline_width: $engineering_outline_width
+      outline_color: $engineering_outline_color
+      text_font: $f_normal
+      text_color: ${c_text}
+      text_align: LEFT
+      bg_opa: TRANSP
+
+    image:
+      bg_opa: TRANSP
+
+    line:
+      bg_opa: TRANSP
+
+    bar:
+      outline_width: $engineering_outline_width
+      outline_color: $engineering_outline_color
+      bg_opa: COVER
+      bg_color: ${c_line}
+      border_width: 0
+      radius: ${r_card}
+      indicator:
+        bg_color: ${c_accent}
+        radius: ${r_card}
+
+  style_definitions:
+    # Card with outline only - tiles, small panels
+    - id: style_card
+      border_width: ${bw}
+      border_color: ${c_line}
+      bg_color: ${c_bg}
+      bg_opa: COVER
+      radius: ${r_card}
+
+    # Card with outline and shadow - main content areas of a page
+    - id: style_card_raised
+      border_width: ${bw}
+      border_color: ${c_line}
+      bg_color: ${c_bg}
+      bg_opa: COVER
+      radius: ${r_card}
+      shadow_width: 55
+      shadow_color: ${c_line}
+
+    # Unit behind a large value (kWh, %, m3)
+    - id: style_unit
+      text_font: $f_small
+      text_color: ${c_muted}
+      pad_bottom: ${sp_baseline}
+
+    # Secondary text
+    - id: style_muted
+      text_color: ${c_muted}
+
+    - id: style_tabs
+      radius: ${r_card}
+      pad_all: 2px
+      bg_color: ${c_accent}
+      text_color: ${c_accent_light}
+      bg_opa: COVER
+
+    - id: style_statusbar
+      bg_color: ${c_bg}
+      bg_opa: COVER
+      border_opa: COVER
+      border_color: ${c_text}
+      border_side: BOTTOM
+      border_width: ${bw}
+      radius: 0
+      pad_left: ${sp_page}px
+      pad_right: ${sp_page}px
+      pad_top: 0px
+      pad_bottom: 0px
+      width: 100%

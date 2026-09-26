@@ -1,0 +1,62 @@
+#-------------------------------------------
+# Header (top right): outdoor temperature and clock.
+# The icon tabs (pages_tabs.yaml) use the rest of the header, so these are
+# plain labels instead of a full-width bar - a bar on top would swallow taps
+# on the tabs.
+#
+# The clock is driven minute-aligned by clock_timer (device_basics.yaml).
+# The temperature comes from any Home Assistant sensor: set
+# outdoor_temperature_entity_id to one of yours. Without a matching entity the
+# label simply shows "--°C".
+#-------------------------------------------
+
+substitutions:
+  label_time_id: time_id
+  label_temp_id: temp_id
+  outdoor_temperature_entity_id: sensor.outdoor_temperature # <- adapt to your setup
+
+script:
+  - id: time_update
+    then:
+      - lambda: |-
+          if (!id(clock_timer).now().is_valid()) {
+            ESP_LOGD("${TAG}", "time_update: time not valid yet, skipping");
+            return;
+          }
+          lv_label_set_text_fmt($label_time_id, "%02i:%02i", id(clock_timer).now().hour, id(clock_timer).now().minute);
+
+  - id: temp_update
+    then:
+      - lambda: |-
+          float t = id(outdoor_temperature).state;
+          if (isnan(t)) {
+            lv_label_set_text($label_temp_id, "--°C");
+            return;
+          }
+          lv_label_set_text_fmt($label_temp_id, "%.1f°C", t);
+
+sensor:
+  - platform: homeassistant
+    id: outdoor_temperature
+    entity_id: $outdoor_temperature_entity_id
+    internal: true
+    on_value:
+      - script.execute: temp_update
+
+lvgl:
+  top_layer:
+    widgets:
+      - label:
+          id: $label_temp_id
+          align: TOP_RIGHT
+          x: -${sp_page}
+          y: 3
+          text_align: RIGHT
+          text: "--°C"
+      - label:
+          id: $label_time_id
+          align: TOP_RIGHT
+          x: -${sp_page}
+          y: 33
+          text_align: RIGHT
+          text: "--:--"

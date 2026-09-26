@@ -1,0 +1,520 @@
+#-------------------------------------------
+# Example page: room controls
+#
+# Two room cards, each with roller-shutter buttons (up / stop / down), a
+# window-style bar showing the closed share of the shutter, and switches for
+# light (and heater). Same layout as on the author's panel, see
+# docs/examples/attic.png.
+#
+# This is a DEMO without any dependency on a specific smart home: the shutter
+# buttons only write a log line, the switches toggle locally. The comments at
+# each on_click show how to call Home Assistant instead; add homeassistant
+# sensors to reflect the real state (position -> bar + state label, switch
+# state -> checked + On/Off).
+#-------------------------------------------
+
+substitutions:
+  page_room_controls_id: page_room_controls_id
+  page_room_controls_friendly_name: "Rooms"
+
+lvgl:
+  pages:
+    - id: $page_room_controls_id
+      x: 0
+      y: 0
+      skip: false
+      layout:
+        type: grid
+        grid_columns: ["${sp_page}px", fr(1), "${sp_gap}px", fr(1), "${sp_page}px"]
+        grid_rows: ["${y_content}px", fr(1), "${sp_gap}px"]
+        pad_column: 0px
+        pad_row: 0px
+      width: 100%
+      bg_color: ${c_bg}
+      bg_opa: cover
+      widgets:
+        # ---- Bedroom: shutter (buttons + window), switches ----
+        - obj:
+            grid_cell_row_pos: 1
+            grid_cell_column_pos: 1
+            grid_cell_x_align: STRETCH
+            grid_cell_y_align: STRETCH
+            styles: style_card_raised
+            scrollable: false
+            scrollbar_mode: "OFF"
+            pad_all: ${sp_gap}px
+            layout:
+              type: grid
+              grid_columns: [72px, fr(1)]
+              grid_rows: [40px, fr(1), fr(1), fr(1), 72px]
+              pad_column: ${sp_gap}px
+              pad_row: ${sp_gap}px
+            widgets:
+              # title left, shutter state right
+              - obj:
+                  grid_cell_row_pos: 0
+                  grid_cell_column_pos: 0
+                  grid_cell_column_span: 2
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  scrollable: false
+                  layout:
+                    type: FLEX
+                    flex_flow: ROW
+                    flex_align_main: SPACE_BETWEEN
+                    flex_align_cross: END
+                  widgets:
+                    - label:
+                        text_font: $f_large
+                        text: "Bedroom"
+                    - label:
+                        id: label_shutter_bedroom_state_id
+                        styles: style_muted
+                        pad_bottom: ${sp_baseline}
+                        text: "Closed"
+
+              - button:
+                  id: button_shutter_bedroom_up_id
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: true
+                        scrollable: false
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: -8 # icon and label closer together
+                        widgets:
+                          - label:
+                              event_bubble: true
+                              text_font: $f_icon
+                              text: $up
+                          - label:
+                              event_bubble: true
+                              text: "Up"
+                  on_click:
+                    # DEMO: wire this to Home Assistant, e.g.
+                    #   - homeassistant.action:
+                    #       action: cover.open_cover
+                    #       data:
+                    #         entity_id: cover.your_shutter
+                    - lambda: 'ESP_LOGI("${TAG}", "bedroom shutter: up");'
+              - button:
+                  id: button_shutter_bedroom_stop_id
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  state:
+                    disabled: true
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: true
+                        scrollable: false
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: -8 # icon and label closer together
+                        widgets:
+                          - label:
+                              event_bubble: true
+                              text_font: $f_icon
+                              text: $stop
+                          - label:
+                              event_bubble: true
+                              text: "Stop"
+                  on_click:
+                    # DEMO: wire this to Home Assistant, e.g.
+                    #   - homeassistant.action:
+                    #       action: cover.stop_cover
+                    #       data:
+                    #         entity_id: cover.your_shutter
+                    - lambda: 'ESP_LOGI("${TAG}", "bedroom shutter: stop");'
+              - button:
+                  id: button_shutter_bedroom_down_id
+                  grid_cell_row_pos: 3
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  state:
+                    disabled: true
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: true
+                        scrollable: false
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: -8 # icon and label closer together
+                        widgets:
+                          - label:
+                              event_bubble: true
+                              text_font: $f_icon
+                              text: $down
+                          - label:
+                              event_bubble: true
+                              text: "Down"
+                  on_click:
+                    # DEMO: wire this to Home Assistant, e.g.
+                    #   - homeassistant.action:
+                    #       action: cover.close_cover
+                    #       data:
+                    #         entity_id: cover.your_shutter
+                    - lambda: 'ESP_LOGI("${TAG}", "bedroom shutter: down");'
+
+              # window: closed share of the shutter from the top (RANGE position..100,
+              # Home Assistant reports 100 = open). DEMO: fully closed.
+              - bar:
+                  id: bar_shutter_bedroom_id
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 1
+                  grid_cell_row_span: 3
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  min_value: 0
+                  max_value: 100
+                  start_value: 0
+                  value: 100
+                  mode: RANGE
+                  border_width: ${bw}
+                  border_color: ${c_accent}
+                  bg_color: ${c_bg}
+                  pad_all: 0
+
+              # switches
+              - obj:
+                  grid_cell_row_pos: 4
+                  grid_cell_column_pos: 0
+                  grid_cell_column_span: 2
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  scrollable: false
+                  layout:
+                    type: FLEX
+                    flex_flow: ROW
+                    pad_column: ${sp_gap}px
+                  widgets:
+                    - button:
+                        id: button_light_bedroom_id
+                        flex_grow: 1
+                        height: 100%
+                        pad_all: 0px
+                        scrollable: false
+                        scrollbar_mode: "OFF"
+                        widgets:
+                          - obj:
+                              width: SIZE_CONTENT
+                              height: SIZE_CONTENT
+                              align: CENTER
+                              event_bubble: true
+                              scrollable: false
+                              layout:
+                                type: FLEX
+                                flex_flow: ROW
+                                flex_align_cross: CENTER
+                                pad_column: 6
+                              widgets:
+                                - label:
+                                    event_bubble: true
+                                    text_font: $f_icon
+                                    text: $lamp
+                                - label:
+                                    id: label_light_bedroom_id
+                                    event_bubble: true
+                                    text: "Off"
+                        on_click:
+                          # DEMO: toggles locally. With Home Assistant, call e.g.
+                          # switch.toggle here and set checked/label from a
+                          # homeassistant text_sensor of that switch instead.
+                          - lambda: |-
+                              bool on = !lv_obj_has_state(button_light_bedroom_id, LV_STATE_CHECKED);
+                              if (on) lv_obj_add_state(button_light_bedroom_id, LV_STATE_CHECKED);
+                              else lv_obj_clear_state(button_light_bedroom_id, LV_STATE_CHECKED);
+                              lv_label_set_text(label_light_bedroom_id, on ? "On" : "Off");
+                              ESP_LOGI("${TAG}", "bedroom light: %s", on ? "on" : "off");
+
+        # ---- Office: shutter (buttons + window), switches ----
+        - obj:
+            grid_cell_row_pos: 1
+            grid_cell_column_pos: 3
+            grid_cell_x_align: STRETCH
+            grid_cell_y_align: STRETCH
+            styles: style_card_raised
+            scrollable: false
+            scrollbar_mode: "OFF"
+            pad_all: ${sp_gap}px
+            layout:
+              type: grid
+              grid_columns: [72px, fr(1)]
+              grid_rows: [40px, fr(1), fr(1), fr(1), 72px]
+              pad_column: ${sp_gap}px
+              pad_row: ${sp_gap}px
+            widgets:
+              # title left, shutter state right
+              - obj:
+                  grid_cell_row_pos: 0
+                  grid_cell_column_pos: 0
+                  grid_cell_column_span: 2
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  scrollable: false
+                  layout:
+                    type: FLEX
+                    flex_flow: ROW
+                    flex_align_main: SPACE_BETWEEN
+                    flex_align_cross: END
+                  widgets:
+                    - label:
+                        text_font: $f_large
+                        text: "Office"
+                    - label:
+                        id: label_shutter_office_state_id
+                        styles: style_muted
+                        pad_bottom: ${sp_baseline}
+                        text: "Closed"
+
+              - button:
+                  id: button_shutter_office_up_id
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: true
+                        scrollable: false
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: -8 # icon and label closer together
+                        widgets:
+                          - label:
+                              event_bubble: true
+                              text_font: $f_icon
+                              text: $up
+                          - label:
+                              event_bubble: true
+                              text: "Up"
+                  on_click:
+                    # DEMO: wire this to Home Assistant, e.g.
+                    #   - homeassistant.action:
+                    #       action: cover.open_cover
+                    #       data:
+                    #         entity_id: cover.your_shutter
+                    - lambda: 'ESP_LOGI("${TAG}", "office shutter: up");'
+              - button:
+                  id: button_shutter_office_stop_id
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  state:
+                    disabled: true
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: true
+                        scrollable: false
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: -8 # icon and label closer together
+                        widgets:
+                          - label:
+                              event_bubble: true
+                              text_font: $f_icon
+                              text: $stop
+                          - label:
+                              event_bubble: true
+                              text: "Stop"
+                  on_click:
+                    # DEMO: wire this to Home Assistant, e.g.
+                    #   - homeassistant.action:
+                    #       action: cover.stop_cover
+                    #       data:
+                    #         entity_id: cover.your_shutter
+                    - lambda: 'ESP_LOGI("${TAG}", "office shutter: stop");'
+              - button:
+                  id: button_shutter_office_down_id
+                  grid_cell_row_pos: 3
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  pad_all: 0px
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  state:
+                    disabled: true
+                  widgets:
+                    - obj:
+                        width: SIZE_CONTENT
+                        height: SIZE_CONTENT
+                        align: CENTER
+                        event_bubble: true
+                        scrollable: false
+                        layout:
+                          type: FLEX
+                          flex_flow: COLUMN
+                          flex_align_cross: CENTER
+                          pad_row: -8 # icon and label closer together
+                        widgets:
+                          - label:
+                              event_bubble: true
+                              text_font: $f_icon
+                              text: $down
+                          - label:
+                              event_bubble: true
+                              text: "Down"
+                  on_click:
+                    # DEMO: wire this to Home Assistant, e.g.
+                    #   - homeassistant.action:
+                    #       action: cover.close_cover
+                    #       data:
+                    #         entity_id: cover.your_shutter
+                    - lambda: 'ESP_LOGI("${TAG}", "office shutter: down");'
+
+              # window: closed share of the shutter from the top (RANGE position..100,
+              # Home Assistant reports 100 = open). DEMO: fully closed.
+              - bar:
+                  id: bar_shutter_office_id
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 1
+                  grid_cell_row_span: 3
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  min_value: 0
+                  max_value: 100
+                  start_value: 0
+                  value: 100
+                  mode: RANGE
+                  border_width: ${bw}
+                  border_color: ${c_accent}
+                  bg_color: ${c_bg}
+                  pad_all: 0
+
+              # switches
+              - obj:
+                  grid_cell_row_pos: 4
+                  grid_cell_column_pos: 0
+                  grid_cell_column_span: 2
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  scrollable: false
+                  layout:
+                    type: FLEX
+                    flex_flow: ROW
+                    pad_column: ${sp_gap}px
+                  widgets:
+                    - button:
+                        id: button_light_office_id
+                        flex_grow: 1
+                        height: 100%
+                        pad_all: 0px
+                        scrollable: false
+                        scrollbar_mode: "OFF"
+                        widgets:
+                          - obj:
+                              width: SIZE_CONTENT
+                              height: SIZE_CONTENT
+                              align: CENTER
+                              event_bubble: true
+                              scrollable: false
+                              layout:
+                                type: FLEX
+                                flex_flow: ROW
+                                flex_align_cross: CENTER
+                                pad_column: 6
+                              widgets:
+                                - label:
+                                    event_bubble: true
+                                    text_font: $f_icon
+                                    text: $lamp
+                                - label:
+                                    id: label_light_office_id
+                                    event_bubble: true
+                                    text: "Off"
+                        on_click:
+                          # DEMO: toggles locally. With Home Assistant, call e.g.
+                          # switch.toggle here and set checked/label from a
+                          # homeassistant text_sensor of that switch instead.
+                          - lambda: |-
+                              bool on = !lv_obj_has_state(button_light_office_id, LV_STATE_CHECKED);
+                              if (on) lv_obj_add_state(button_light_office_id, LV_STATE_CHECKED);
+                              else lv_obj_clear_state(button_light_office_id, LV_STATE_CHECKED);
+                              lv_label_set_text(label_light_office_id, on ? "On" : "Off");
+                              ESP_LOGI("${TAG}", "office light: %s", on ? "on" : "off");
+                    - button:
+                        id: button_heater_office_id
+                        flex_grow: 1
+                        height: 100%
+                        pad_all: 0px
+                        scrollable: false
+                        scrollbar_mode: "OFF"
+                        widgets:
+                          - obj:
+                              width: SIZE_CONTENT
+                              height: SIZE_CONTENT
+                              align: CENTER
+                              event_bubble: true
+                              scrollable: false
+                              layout:
+                                type: FLEX
+                                flex_flow: ROW
+                                flex_align_cross: CENTER
+                                pad_column: 6
+                              widgets:
+                                - label:
+                                    event_bubble: true
+                                    text_font: $f_icon
+                                    text: $radiator
+                                - label:
+                                    id: label_heater_office_id
+                                    event_bubble: true
+                                    text: "Off"
+                        on_click:
+                          # DEMO: toggles locally. With Home Assistant, call e.g.
+                          # switch.toggle here and set checked/label from a
+                          # homeassistant text_sensor of that switch instead.
+                          - lambda: |-
+                              bool on = !lv_obj_has_state(button_heater_office_id, LV_STATE_CHECKED);
+                              if (on) lv_obj_add_state(button_heater_office_id, LV_STATE_CHECKED);
+                              else lv_obj_clear_state(button_heater_office_id, LV_STATE_CHECKED);
+                              lv_label_set_text(label_heater_office_id, on ? "On" : "Off");
+                              ESP_LOGI("${TAG}", "office heater: %s", on ? "on" : "off");

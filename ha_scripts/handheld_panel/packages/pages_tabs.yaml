@@ -1,0 +1,94 @@
+# Tab bar: one icon tab per page
+# Icon-only tabs in the left part of the header (full height 0..63 px); the
+# outdoor temperature and the clock of statusbar.yaml sit on the right.
+# Add a page: include its package, add an option to the select below, a branch
+# in apply_tab and a button in the tab bar.
+globals:
+  # Index of the active tab, set from on_value. Kept separately so the page
+  # can be re-applied after boot, when LVGL is ready (the restored select value
+  # is published during setup, possibly before the pages exist).
+  - id: tab_index
+    type: int
+    restore_value: no
+    initial_value: "0"
+
+select:
+  - platform: template
+    name: Tab
+    id: active_tab
+    options:
+      - $page_room_controls_friendly_name
+    initial_option: $page_room_controls_friendly_name
+    optimistic: true
+    restore_value: true
+    on_value:
+      - lambda: |-
+          ESP_LOGD("${TAG}", "Chosen tab: %s (%d)", x.c_str(), (int) i);
+          id(tab_index) = i;
+      - script.execute: apply_tab
+
+script:
+  # Shows the page of the active tab and marks exactly that tab as checked.
+  - id: apply_tab
+    mode: restart
+    then:
+      - if:
+          condition:
+            lambda: 'return id(tab_index) == 0;'
+          then:
+            - lvgl.page.show:
+                id: $page_room_controls_id
+                animation: FADE_IN
+            - lvgl.widget.update:
+                id: button_tab_room_controls_id
+                state:
+                  checked: true
+          else:
+            - lvgl.widget.update:
+                id: button_tab_room_controls_id
+                state:
+                  checked: false
+
+esphome:
+  on_boot:
+    # after all components incl. LVGL: page and tab highlight always match
+    priority: -100
+    then:
+      - script.execute: apply_tab
+
+lvgl:
+  top_layer:
+    widgets:
+      - obj:
+          id: tab_bar_id
+          styles: style_statusbar
+          x: 0
+          y: 0
+          width: 100%
+          height: 63px
+          pad_top: 3px
+          scrollable: false
+          scrollbar_mode: "OFF"
+          layout:
+            type: FLEX
+            flex_flow: ROW
+            flex_align_cross: START
+            pad_column: 2px
+          widgets:
+            - button:
+                id: button_tab_room_controls_id
+                styles: style_tabs
+                width: ${w_tab}px
+                # taller than the bar: the bottom edge (incl. rounded corners) is
+                # clipped by the bar, pad_bottom re-centers the icon in the visible part
+                height: 66px
+                pad_bottom: 6px
+                widgets:
+                  - label:
+                      align: CENTER
+                      text_font: $f_large
+                      text: $attic
+                on_click:
+                  - select.set:
+                      id: active_tab
+                      option: $page_room_controls_friendly_name

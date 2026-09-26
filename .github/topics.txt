@@ -1,8 +1,12 @@
 3d-printing
-esp-32
+esp32
+esp32-s3
 esphome
+home-assistant
+lvgl
+touchscreen
+qi-charging
 magsafe
 maker
 smarthome
 wireless-charging
-

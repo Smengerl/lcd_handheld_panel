@@ -5,21 +5,7 @@
 #-------------------------------------------
 
 substitutions:
-  #  display_id: my_display          # Optional display ID reference
   touchscreen_id: my_touchscreen # Touchscreen component ID
-
-#-------------------------------------------
-# External Components (Optional/Commented)
-# Uncomment to use development versions of LVGL
-#-------------------------------------------
-#external_components:
-#  - source: github://pr#6363  # Previous commit - not needed once merged
-#    refresh: 10min
-#    components: [lvgl]
-#external_components:
-# - source: github://clydebarrow/esphome@lvgl
-#   components: [ lvgl ]
-#    refresh: 10min
 
 #-------------------------------------------
 # ESP32-S3 Hardware Configuration
@@ -115,11 +101,9 @@ time:
       - 0.pool.ntp.org
       - 1.pool.ntp.org
       - 2.pool.ntp.org
-    # Update the status-bar clock/date minute-aligned instead of via a free-running
-    # interval: 60s (which drifted by up to ~59s). on_time_sync sets the clock right
-    # after the NTP sync instead of showing placeholder text for up to 60s.
-    # time_update is defined in statusbar.yaml (always loaded together with device_basics);
-    # it only fires on a valid time -> no more OOB access to the weekday/month arrays.
+    # Update the header clock minute-aligned (on_time) and right after the NTP
+    # sync. time_update is defined in statusbar.yaml (always loaded together
+    # with device_basics) and only runs on a valid time.
     on_time_sync:
       then:
         - script.execute: time_update
@@ -170,7 +154,6 @@ i2c:
     scl:
       number: GPIO45
       ignore_strapping_warning: true
-    #frequency: 100kHz
 
 #-------------------------------------------
 # Touchscreen Configuration
@@ -182,7 +165,6 @@ touchscreen:
     mirror_x: false
     mirror_y: false
   id: $touchscreen_id
-  #display: $display_id
   on_touch:
     # ESP_LOGI instead of logger.log: - the latter often does not reach the
     # ESP-IDF console, depending on log routing/level.
@@ -205,7 +187,6 @@ spi:
 
 display:
   - platform: st7701s
-    #    id: $display_id
     update_interval: never # Manual updates only via LVGL
     auto_clear_enabled: False # LVGL handles clearing
     spi_mode: MODE3
@@ -263,7 +244,5 @@ display:
 # Manages UI rendering and touch input
 #-------------------------------------------
 lvgl:
-  #  displays:
-  #    - display_id: $display_id
   touchscreens:
     - touchscreen_id: $touchscreen_id

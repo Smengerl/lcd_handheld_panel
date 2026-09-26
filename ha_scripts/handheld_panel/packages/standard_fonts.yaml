@@ -1,10 +1,12 @@
 substitutions:
 
   ### Fonts to use
-  icon_font: icon_font
-  text_font: text_font
-  weather_font: weather_font
-  text_font_large: text_font_large
+  # Font roles (design tokens) -> physical fonts below
+  f_large: text_font_large      # 32 px: values, large headings
+  f_normal: text_font           # 20 px: titles, labels, button text
+  f_small: text_font_small      # 14 px: units, captions, legends, tabs
+  f_icon: icon_font             # 45 px: icons in tiles and buttons
+  weather_font: weather_font    # 60 px: weather icon (overview only)
 
   # ICONS #############################################################
 
@@ -15,8 +17,6 @@ substitutions:
 
   down:                     "\U000F0045" # mdi:arrow-down
   up:                       "\U000F005D" # mdi:arrow-up
-  left:                     "\U000F004D" # mdi:arrow-left
-  right:                    "\U000F0054" # mdi:arrow-right
 
   stop:                     "\U000F0667" # mdi:stop-circle-outline
 
@@ -33,13 +33,8 @@ substitutions:
   battery_charging_high:    "\U000F12A6" # mdi:battery-charging-high
 
   energy:                   "\U000F140B" # mdi:lightning-bolt
-  pause:                    "\U000F03E4" # mdi:pause
-  disconnected:             "\U000F1616" # mdi:connection
   co2:                      "\U000F07E4" # mdi:molecule-co2
-  sigma:                    "\U000F04A0" # mdi:sigma 
   
-  line_unchecked:           "\U000F0BD2" # mdi:timeline-outline
-  line_checked:             "\U000F1532" # mdi:timeline-check
 
 
   ### Page overview
@@ -47,13 +42,11 @@ substitutions:
   garage_open:              "\U000F12D4" # mdi:garage-open-variant
   garage_closed:            "\U000F12D3" # mdi:garage-variant
   door_open:                "\U000F081C" # mdi:door-open
-  window_open:              "\U000F05B1" # mdi:window-open
   temp_low:                 "\U000F10C3" # mdi:thermometer-low
   humidity_high:            "\U000F1509" # mdi:water-percent-alert
   radiator:                 "\U000F0438" # mdi:radiator
   robot_vacuum:             "\U000F0908" # mdi:robot-vacuum-variant
   lawn_mower:               "\U000F11F7" # mdi:robot-mower
-  outdoor_lamp:             "\U000F1054" # mdi:outdoor-lamp
   string_lights:            "\U000F12BA" # mdi-string-lights
   pollen:                   "\U000F1886" # mdi:flower-pollen-outline
   solar_power:              "\U000F0A72" # mdi:solar-power
@@ -70,38 +63,25 @@ substitutions:
   ### weather icon
   cloudy:                   "\U000F0590" # mdi:weather-cloudy
   cloudyalert:              "\U000F0F2F" # mdi:weather-cloudy-alert
-  cloudyarrowright:         "\U000F0E6E" # mdi:weather-cloudy-arrow-right
   fog:                      "\U000F0591" # mdi:weather-fog
   hail:                     "\U000F0592" # mdi:weather-hail
-  hazy:                     "\U000F0F30" # mdi:weather-hazy
-  hurricane:                "\U000F0898" # mdi:weather-hurricane
   lightning:                "\U000F0593" # mdi:weather-lightning
   lightningrainy:           "\U000F067E" # mdi:weather-lightning-rainy
   night:                    "\U000F0594" # mdi:weather-night
-  nightpartlycloudy:        "\U000F0F31" # mdi:weather-night-partly-cloudy
   partlycloudy:             "\U000F0595" # mdi:weather-partly-cloudy
-  partlylightning:          "\U000F0F32" # mdi:weather-partly-lightning
-  partlyrainy:              "\U000F0F33" # mdi:weather-partly-rainy
-  partlysnowy:              "\U000F0F34" # mdi:weather-partly-snowy
   partlysnowyrainy:         "\U000F0F35" # mdi:weather-partly-snowy-rainy
   pouring:                  "\U000F0596" # mdi:weather-pouring
   rainy:                    "\U000F0597" # mdi:weather-rainy
   snowy:                    "\U000F0598" # mdi:weather-snowy
-  snowyheavy:               "\U000F0F36" # mdi:weather-snowy-heavy
   snowyrainy:               "\U000F067F" # mdi:weather-snowy-rainy
   sunny:                    "\U000F0599" # mdi:weather-sunny
-  sunnyalert:               "\U000F0F37" # mdi:weather-sunny-alert
-  sunnyoff:                 "\U000F14E4" # mdi:weather-sunny-off
-  sunset:                   "\U000F059A" # mdi:weather-sunset
-  sunsetdown:               "\U000F059B" # mdi:weather-sunset-down
-  sunsetup:                 "\U000F059C" # mdi:weather-sunset-up
-  tornado:                  "\U000F0F38" # mdi:weather-tornado
   windy:                    "\U000F059D" # mdi:weather-windy
   windyvariant:             "\U000F059E" # mdi:weather-windy-variant
 
  
   ### EVCC
-  transmission_tower:        "\U000F0D3E" # mdi:transmission-tower
+  home_import_outline:       "\U000F0F9C" # mdi:home-import-outline (grid import)
+  home_export_outline:       "\U000F0F9B" # mdi:home-export-outline (grid feed-in)
   power_on:                  "\U000F0901" # mdi:power-cycle
   power_off:                 "\U000F0902" # mdi:power-off
   solar_power_variant:       "\U000F1A74" # mdi:solar-power-variant-outline
@@ -110,7 +90,6 @@ substitutions:
   water:                     "\U000F058C" # mdi:water
   fire:                      "\U000F0238" # mdi:fire
 
-  home:                      "\U000F02DC" # mdi:home
   road:                      "\U000F0462" # mdi:road-variant
 
   ### EV vehicle icons
@@ -133,13 +112,21 @@ substitutions:
   attic:                    "\U000F112B" # mdi:home-roof
 
 
+  ### Drucker
+  layers_outline:           "\U000F09FE" # mdi:layers-outline
+  clock_outline:            "\U000F0150" # mdi:clock-outline
+  flag_checkered:           "\U000F023C" # mdi:flag-checkered
+  check:                    "\U000F012C" # mdi:check
+  printer_3d:               "\U000F042B" # mdi:printer-3d
+
+
 
 #-------------------------------------------
 # Fonts
 #-------------------------------------------
 font:
   - file: "gfonts://Roboto"
-    id: $text_font
+    id: $f_normal
     size: 20
     bpp: 4
     glyphs:
@@ -148,7 +135,7 @@ font:
        'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
        'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
        'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-       'u', 'v', 'w', 'x', 'y', 'z', 'Ä', 'ä', 'Ö', 'ö', 'Ü', 'ü', 'ß', '/', '€', '|']    
+       'u', 'v', 'w', 'x', 'y', 'z', 'Ä', 'ä', 'Ö', 'ö', 'Ü', 'ü', 'ß', '/', '€', '|', '³']    
 
     extras:
       # http://materialdesignicons.com/cdn/7.4.47/
@@ -158,25 +145,20 @@ font:
           $unlocked,
           $car,
           $car_electric,
-          $disconnected,
-          $pause,
           $energy,
           
           $charging_cable_connected,
-
-          $transmission_tower,
+          $home_import_outline,
+          $home_export_outline,
           $solar_power_variant,
+          $sunny,
+          $water,
+          $fire,
 
           $co2,
-          $sigma,
-          
-          $line_checked,
-          $line_unchecked,
 
           $up,
           $down,
-          $right,
-          $left,
           $home_lightning_bold,
 
 
@@ -199,7 +181,6 @@ font:
           $error,
           $garage_open,
           $door_open,
-          $window_open,
           $temp_low,
           $humidity_high,
           $pollen,
@@ -209,11 +190,32 @@ font:
 
           $wifi,
           $attic,
+
+          $layers_outline,
+          $clock_outline,
+          $flag_checkered,
+          $check,
+          $printer_3d,
         ]
 
 
+  # Small caption font (filament type labels like "PETG" under the AMS/spool
+  # swatches) - the rest of this codebase only had 20px/32px before, both too
+  # wide for a 4-letter code inside a ~50px swatch column.
   - file: "gfonts://Roboto"
-    id: $text_font_large
+    id: $f_small
+    size: 14
+    bpp: 4
+    glyphs:
+      ['&', '@', '!', ',', '.', '?', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z', 'Ä', 'ä', 'Ö', 'ö', 'Ü', 'ü', 'ß', '/', '€', '|', '³']
+
+  - file: "gfonts://Roboto"
+    id: $f_large
     size: 32
     bpp: 4
     glyphs:
@@ -231,10 +233,15 @@ font:
           $locked,
           $unlocked,
           $road,
-          $disconnected,
-          $pause,
           $energy,
 
+          # icon-only tabs (pages_tabs*.yaml)
+          $home_lightning_bold,
+          $solar_power_variant,
+          $car_electric,
+          $printer_3d,
+          $attic,
+          $wifi,
         ]
 
  
@@ -248,39 +255,25 @@ font:
       
       $cloudy,
       $cloudyalert,
-      $cloudyarrowright,
       $fog,
       $hail,
-      $hazy,
-      $hurricane,
       $lightning,
       $lightningrainy,
       $night,
-      $nightpartlycloudy,
       $partlycloudy,
-      $partlylightning,
-      $partlyrainy,
-      $partlysnowy,
       $partlysnowyrainy,
       $pouring,
       $rainy,
       $snowy,
-      $snowyheavy,
       $snowyrainy,
       $sunny,
-      $sunnyalert,
-      $sunnyoff,
-      $sunset,
-      $sunsetdown,
-      $sunsetup,
-      $tornado,
       $windy,
       $windyvariant,
     ]
 
   # http://materialdesignicons.com/cdn/7.4.47/
   - file: 'https://github.com/Templarian/MaterialDesign-Webfont/raw/v7.4.47/fonts/materialdesignicons-webfont.ttf'
-    id: $icon_font
+    id: $f_icon
     size: 45
     bpp: 4
     glyphs: [
@@ -292,12 +285,16 @@ font:
       $locked,
       $unlocked,
 
-      ### Icons for the power flow diagram
+      ### Icons for the EVCC page (tiles, mode buttons)
       $home_lightning_bold,
-      $solar_power_variant,
-      $transmission_tower,
       $water,
       $fire,
+      $solar_power_variant,
+
+      ### Icons for the EVCC tiles
+      $sunny,
+      $home_import_outline,
+      $home_export_outline,
 
       ### Icons for overview-page buttons
       $lamp,
@@ -307,7 +304,6 @@ font:
       $radiator,
       $robot_vacuum,
       $lawn_mower,
-      $outdoor_lamp,
 
       $info,
       $warning,
