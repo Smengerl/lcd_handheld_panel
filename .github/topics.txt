@@ -4,9 +4,9 @@ esp32-s3
 esphome
 home-assistant
 lvgl
-touchscreen
-qi-charging
 magsafe
 maker
+qi-charging
 smarthome
+touchscreen
 wireless-charging
