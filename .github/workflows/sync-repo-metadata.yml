@@ -1,6 +1,7 @@
 name: Sync repo metadata from files
 
 on:
+  workflow_dispatch: # run manually from the Actions tab
   push:
     paths:
       - .github/topics.txt
