@@ -1,14 +1,14 @@
-# Wireless Smart Home Control Panel
+# Wireless Smart Home Panel
 
 ![Smart home control panel](./docs/hero.jpg)
 
 [![3D Printing](https://img.shields.io/badge/3D_printing-STL-green)](#3d-printed-parts)
 [![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue)](http://creativecommons.org/licenses/by-sa/4.0/)
 
-A 3D-printed, battery-powered 4″ touchscreen (480×480) for Home Assistant, built with ESPHome and LVGL. It charges wirelessly via Qi and snaps onto its charger with a MagSafe-compatible magnetic ring.
+**Smart home in your hand.** A 3D-printed, battery-powered 4″ touchscreen (480×480) for Home Assistant, built with ESPHome and LVGL. It charges wirelessly via Qi and snaps onto its charger with a MagSafe-compatible magnetic ring.
 
 ## Table of Contents
-- [Design](#design)
+- [Overview](#overview)
 - [Examples](#examples)
 - [3D-Printed Parts](#3d-printed-parts)
 - [Standard Hardware](#standard-hardware)
@@ -18,7 +18,7 @@ A 3D-printed, battery-powered 4″ touchscreen (480×480) for Home Assistant, bu
 - [License](#license)
 - [Authors](#authors)
 
-## Design
+## Overview
 
 ![Assembly overview](./print/zsb/full.png)
 

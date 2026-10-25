@@ -1,1 +1,1 @@
-3D-printed, wirelessly charged 4″ touchscreen panel for Home Assistant (ESPHome + LVGL)
+Wireless 4″ touch panel for Home Assistant. 3D-printed, battery-powered, magnetic Qi charging. ESPHome + LVGL.
